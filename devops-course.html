@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps/SRE — Structured 12-Month Course</title>
+    <title>Blue Team Security — 12-Month Structured Course</title>
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap"
       rel="stylesheet"
@@ -28,13 +28,14 @@
         --green: #4caf7d;
         --amber: #e8a24a;
         --teal: #3dcfb0;
-        --purple: #9d82f5;
         --red: #e05a5a;
+        --orange: #f97316;
         --blue-dim: #1a2a45;
         --green-dim: #1a3028;
         --amber-dim: #3a2a10;
         --teal-dim: #0d2e28;
-        --purple-dim: #251f3d;
+        --red-dim: #2e1010;
+        --orange-dim: #2e1a08;
         --font: 'IBM Plex Sans', sans-serif;
         --mono: 'IBM Plex Mono', monospace;
         --radius: 8px;
@@ -53,8 +54,6 @@
         max-width: 920px;
         margin: 0 auto;
       }
-
-      /* Header */
       .header {
         margin-bottom: 2rem;
         border-bottom: 1px solid var(--border);
@@ -78,33 +77,70 @@
         color: var(--muted);
         font-family: var(--mono);
       }
-      .progress-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-top: 12px;
+      .why-box {
+        background: var(--teal-dim);
+        border: 1px solid var(--teal);
+        border-radius: var(--radius-lg);
+        padding: 14px 18px;
+        margin-bottom: 1.5rem;
       }
-      .progress-label {
+      .why-title {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--teal);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .why-text {
+        font-size: 12px;
+        color: var(--text);
+        line-height: 1.65;
+      }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 8px;
+        margin-bottom: 1rem;
+      }
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px;
+      }
+      .stat-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--muted);
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .stat-val {
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .stat-sub {
         font-size: 11px;
+        color: var(--dim);
+      }
+      .res-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 1.5rem;
+        align-items: center;
+      }
+      .res-legend-label {
+        font-size: 10px;
         color: var(--muted);
         font-family: var(--mono);
-        white-space: nowrap;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-right: 4px;
       }
-      .progress-track {
-        flex: 1;
-        height: 4px;
-        background: var(--border);
-        border-radius: 99px;
-        overflow: hidden;
-      }
-      .progress-fill {
-        height: 100%;
-        background: var(--green);
-        border-radius: 99px;
-        width: 0%;
-      }
-
-      /* Phase nav */
       .phase-nav {
         display: flex;
         gap: 6px;
@@ -126,32 +162,26 @@
         border-color: var(--dim);
         color: var(--text);
       }
-      .phase-btn.active {
-        color: var(--text);
-        font-weight: 500;
-      }
       .phase-btn.p1.active {
         border-color: var(--blue);
         color: var(--blue);
         background: var(--blue-dim);
       }
       .phase-btn.p2.active {
-        border-color: var(--green);
-        color: var(--green);
-        background: var(--green-dim);
+        border-color: var(--amber);
+        color: var(--amber);
+        background: var(--amber-dim);
       }
       .phase-btn.p3.active {
-        border-color: var(--purple);
-        color: var(--purple);
-        background: var(--purple-dim);
+        border-color: var(--orange);
+        color: var(--orange);
+        background: var(--orange-dim);
       }
       .phase-btn.p4.active {
         border-color: var(--teal);
         color: var(--teal);
         background: var(--teal-dim);
       }
-
-      /* Phase */
       .phase {
         display: none;
       }
@@ -178,10 +208,10 @@
         background: var(--blue);
       }
       .p2 .phase-dot {
-        background: var(--green);
+        background: var(--amber);
       }
       .p3 .phase-dot {
-        background: var(--purple);
+        background: var(--orange);
       }
       .p4 .phase-dot {
         background: var(--teal);
@@ -190,19 +220,17 @@
         font-size: 15px;
         font-weight: 500;
       }
+      .phase-goal {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
       .phase-dates {
         font-size: 12px;
         color: var(--muted);
         font-family: var(--mono);
         margin-left: auto;
       }
-      .phase-goal {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 2px;
-      }
-
-      /* Module */
       .module {
         margin-bottom: 1.5rem;
         border: 1px solid var(--border);
@@ -239,13 +267,13 @@
         border-radius: 4px;
         white-space: nowrap;
       }
-      .due-upcoming {
-        background: var(--blue-dim);
-        color: var(--blue);
-      }
-      .due-active {
+      .due-now {
         background: var(--amber-dim);
         color: var(--amber);
+      }
+      .due-next {
+        background: var(--blue-dim);
+        color: var(--blue);
       }
       .due-far {
         background: var(--surface2);
@@ -267,8 +295,6 @@
       .module-body.open {
         display: block;
       }
-
-      /* Week inside module */
       .week {
         padding: 16px;
         border-bottom: 1px solid var(--border);
@@ -300,11 +326,9 @@
         color: var(--muted);
         margin-left: auto;
       }
-
-      /* Daily plan */
       .daily-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
         gap: 8px;
         margin-bottom: 12px;
       }
@@ -348,8 +372,11 @@
         color: var(--blue);
         flex-shrink: 0;
       }
-
-      /* Resources */
+      .day-tasks li.hunt::before {
+        content: '◎';
+        color: var(--orange);
+        flex-shrink: 0;
+      }
       .resources {
         display: flex;
         flex-wrap: wrap;
@@ -370,6 +397,12 @@
       .res-link:hover {
         opacity: 0.75;
       }
+      .res-label {
+        font-size: 9px;
+        opacity: 0.7;
+        margin-right: 2px;
+        text-transform: uppercase;
+      }
       .res-oreilly {
         background: #1a2a10;
         color: #78c940;
@@ -385,34 +418,33 @@
         color: var(--amber);
         border-color: #5a4020;
       }
-      .res-killercoda {
-        background: #1a1a2e;
-        color: #a78bfa;
-        border-color: #4c3a8a;
+      .res-thm {
+        background: #1a1030;
+        color: #c084fc;
+        border-color: #5a3090;
       }
-      .res-awssb {
-        background: #1a2030;
-        color: #60a5fa;
-        border-color: #2a4070;
+      .res-htb {
+        background: #0d2010;
+        color: #4ade80;
+        border-color: #1a5a28;
       }
-      .res-roadmap {
-        background: #2a1a10;
-        color: #fb923c;
-        border-color: #7a3a10;
+      .res-blueteam {
+        background: #1a1a30;
+        color: #7dd3fc;
+        border-color: #2a4068;
       }
-      .res-killersh {
-        background: #2a1a1a;
-        color: #f87171;
-        border-color: #7a2a2a;
+      .res-splunk {
+        background: #2a1010;
+        color: #fca5a5;
+        border-color: #6a2020;
       }
-      .res-label {
-        font-size: 9px;
-        opacity: 0.7;
-        margin-right: 2px;
-        text-transform: uppercase;
+      assignment {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--amber-dim);
+        border-radius: var(--radius);
+        border: 1px solid #5a4020;
       }
-
-      /* Assignment */
       .assignment {
         margin-top: 12px;
         padding: 12px 14px;
@@ -439,8 +471,6 @@
         color: var(--muted);
         line-height: 1.55;
       }
-
-      /* Milestone */
       .milestone {
         margin-top: 12px;
         padding: 12px 14px;
@@ -470,19 +500,17 @@
         content: '✓';
         color: var(--green);
       }
-
-      /* Exam block */
       .exam-block {
         margin-top: 12px;
         padding: 12px 14px;
-        background: var(--purple-dim);
+        background: var(--blue-dim);
         border-radius: var(--radius);
-        border: 1px solid #4a3a7a;
+        border: 1px solid #2a4070;
       }
       .exam-label {
         font-size: 10px;
         font-family: var(--mono);
-        color: var(--purple);
+        color: var(--blue);
         margin-bottom: 4px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -497,36 +525,25 @@
         color: var(--muted);
         margin-top: 2px;
       }
-
-      /* Summary bar */
-      .summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 8px;
-        margin-bottom: 1.5rem;
-      }
-      .stat {
-        background: var(--surface);
-        border: 1px solid var(--border);
+      .skip-box {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--teal-dim);
         border-radius: var(--radius);
-        padding: 12px;
+        border: 1px solid var(--teal);
       }
-      .stat-label {
+      .skip-label {
         font-size: 10px;
         font-family: var(--mono);
-        color: var(--muted);
+        color: var(--teal);
         margin-bottom: 4px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
       }
-      .stat-val {
-        font-size: 18px;
-        font-weight: 500;
+      .skip-text {
+        font-size: 12px;
         color: var(--text);
-      }
-      .stat-sub {
-        font-size: 11px;
-        color: var(--dim);
+        line-height: 1.55;
       }
     </style>
   </head>
@@ -535,17 +552,25 @@
       <div class="header">
         <div class="header-top">
           <div>
-            <h1>DevOps / SRE — 12-Month Structured Course</h1>
+            <h1>Blue Team Security — 12-Month Structured Course</h1>
             <div style="font-size:12px;color:var(--muted);margin-top:4px">
-              Start date: June 4, 2026 &nbsp;·&nbsp; Target completion: June 4, 2027
+              Start date: June 8, 2026 &nbsp;·&nbsp; Target: June 8, 2027
             </div>
           </div>
-          <div class="header-meta">O'Reilly · KodeKloud · Killercoda · AWS Skill Builder · Killer.sh</div>
+          <div class="header-meta">IR (40%) · Threat Hunting (30%) · Detection Eng (30%)</div>
         </div>
-        <div class="progress-row">
-          <span class="progress-label">OVERALL PROGRESS</span>
-          <div class="progress-track"><div class="progress-fill" id="main-progress"></div></div>
-          <span class="progress-label" id="progress-pct">0 / 48 weeks</span>
+      </div>
+
+      <div class="why-box">
+        <div class="why-title">Why this path — and why it skips Tier 1</div>
+        <div class="why-text">
+          Your profile — 5 years helpdesk, strong communicator, wired to chase mysteries — maps directly to
+          <strong>Incident Response as an entry point</strong>, not SOC Tier 1. IR roles value operational context (you
+          have it), structured thinking under pressure (you have it), and the ability to explain what happened (you have
+          it). From IR you grow naturally into Threat Hunting (proactive IR), then Detection Engineering (automating
+          what you hunt). This is the blue team specialist track — the exact path that commands $120k+ mid-career and
+          never clicks an alert queue. Linux you'll learn in the context of investigating systems, which is completely
+          different from memorizing commands for a cert.
         </div>
       </div>
 
@@ -553,145 +578,138 @@
         <div class="stat">
           <div class="stat-label">Duration</div>
           <div class="stat-val">52 wks</div>
-          <div class="stat-sub">June 2026 – June 2027</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Weekly time</div>
-          <div class="stat-val">8–10h</div>
-          <div class="stat-sub">Drops to 6h in Phase 4</div>
+          <div class="stat-sub">Jun 2026 – Jun 2027</div>
         </div>
         <div class="stat">
           <div class="stat-label">Certifications</div>
           <div class="stat-val">3</div>
-          <div class="stat-sub">Linux+, CCP, SAA</div>
+          <div class="stat-sub">Sec+, BTL1, CySA+</div>
         </div>
         <div class="stat">
-          <div class="stat-label">Portfolio projects</div>
-          <div class="stat-val">3</div>
-          <div class="stat-sub">All on GitHub</div>
+          <div class="stat-label">Entry target role</div>
+          <div class="stat-val">IR Analyst</div>
+          <div class="stat-sub">Tier 2 entry — skip queue</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Mid-career target</div>
+          <div class="stat-val">Detection Eng</div>
+          <div class="stat-sub">$120–160k range</div>
         </div>
         <div class="stat">
           <div class="stat-label">Exam costs</div>
-          <div class="stat-val">~$750</div>
-          <div class="stat-sub">Only external cost</div>
+          <div class="stat-val">~$900</div>
+          <div class="stat-sub">Sec+, BTL1, CySA+</div>
         </div>
       </div>
 
-      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem;align-items:center">
-        <span style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-right:4px"
-          >Resource key:</span
-        >
+      <div class="res-legend">
+        <span class="res-legend-label">Resources:</span>
         <span class="res-link res-oreilly" style="pointer-events:none"
           ><span class="res-label">O'REILLY</span>O'Reilly Learning</span
         >
-        <span class="res-link res-paid" style="pointer-events:none"
-          ><span class="res-label">KODEKLOUD</span>KodeKloud (paid)</span
+        <span class="res-link res-thm" style="pointer-events:none"
+          ><span class="res-label">THM</span>TryHackMe (free+paid)</span
         >
-        <span class="res-link res-killercoda" style="pointer-events:none"
-          ><span class="res-label">KILLERCODA</span>Killercoda (free)</span
+        <span class="res-link res-htb" style="pointer-events:none"
+          ><span class="res-label">HTB</span>HackTheBox Blue Labs</span
         >
-        <span class="res-link res-awssb" style="pointer-events:none"
-          ><span class="res-label">AWS SKILL BUILDER</span>AWS Skill Builder (free)</span
+        <span class="res-link res-blueteam" style="pointer-events:none"
+          ><span class="res-label">BTL</span>Blue Team Labs Online</span
         >
-        <span class="res-link res-roadmap" style="pointer-events:none"
-          ><span class="res-label">ROADMAP</span>roadmap.sh (free)</span
+        <span class="res-link res-splunk" style="pointer-events:none"
+          ><span class="res-label">SPLUNK</span>Splunk Free Training</span
         >
-        <span class="res-link res-killersh" style="pointer-events:none"
-          ><span class="res-label">KILLER.SH</span>Killer.sh (free w/ exam)</span
-        >
-        <span class="res-link res-free" style="pointer-events:none">↗ Other free</span>
+        <span class="res-link res-free" style="pointer-events:none">↗ Free resource</span>
+        <span class="res-link res-paid" style="pointer-events:none">↗ Paid resource</span>
       </div>
 
       <div class="phase-nav">
-        <button class="phase-btn p1 active" onclick="showPhase('p1',this)">Phase 1 — Linux + Python</button>
-        <button class="phase-btn p2" onclick="showPhase('p2',this)">Phase 2 — Cloud + CI/CD</button>
-        <button class="phase-btn p3" onclick="showPhase('p3',this)">Phase 3 — Docker + Terraform + SAA</button>
-        <button class="phase-btn p4" onclick="showPhase('p4',this)">Phase 4 — K8s + SRE</button>
+        <button class="phase-btn p1 active" onclick="showPhase('p1',this)">Phase 1 — Foundations</button>
+        <button class="phase-btn p2" onclick="showPhase('p2',this)">Phase 2 — IR Core Skills</button>
+        <button class="phase-btn p3" onclick="showPhase('p3',this)">Phase 3 — Threat Hunting</button>
+        <button class="phase-btn p4" onclick="showPhase('p4',this)">Phase 4 — Detection Engineering</button>
       </div>
 
-      <!-- ==================== PHASE 1 ==================== -->
+      <!-- ========== PHASE 1 ========== -->
       <div id="p1" class="phase p1 active">
         <div class="phase-header">
           <div class="phase-dot"></div>
           <div>
-            <div class="phase-name">Phase 1 — Linux + Python Foundations</div>
-            <div class="phase-goal">Goal: Pass CompTIA Linux+ · Build home lab · Write Python scripts</div>
+            <div class="phase-name">Phase 1 — Security Foundations + First Cert</div>
+            <div class="phase-goal">
+              Goal: Pass CompTIA Security+ · Learn networking through an attacker's eyes · Build your home lab
+            </div>
           </div>
-          <div class="phase-dates">Jun 4 – Sep 3, 2026</div>
+          <div class="phase-dates">Jun 8 – Sep 7, 2026</div>
         </div>
 
-        <!-- MODULE 1 -->
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 1.1</span>
-            <span class="module-title">Linux Fundamentals</span>
-            <span class="module-due due-active">Due: Jun 18, 2026</span>
-            <span class="chevron">▼</span>
+            <span class="module-title">Networking + Linux — the attacker context</span>
+            <span class="module-due due-now">Due: Jul 8, 2026</span>
+            <span class="chevron open">▼</span>
           </div>
           <div class="module-body open">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Week 1</span>
-                <span class="week-title">File system, navigation, permissions</span>
-                <span class="week-due">Jun 4–10</span>
+                <span class="week-title">Networking fundamentals — how traffic actually moves</span>
+                <span class="week-due">Jun 8–14</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
                   <div class="day-label"><span>Mon</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>Learning Modern Linux</em> — Ch. 1–2 (file system structure)</li>
-                    <li>Navigate with cd, ls, pwd — no GUI</li>
+                    <li class="reading">
+                      O'Reilly: <em>CompTIA Network+ Study Guide</em> — Ch. 1–2 (OSI model, TCP/IP)
+                    </li>
+                    <li>Don't memorize — understand why each layer exists</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Tue</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 3 — file permissions (chmod, chown)</li>
-                    <li>Create users, set permissions on a test directory</li>
+                    <li class="lab">TryHackMe: "Pre-Security" path — networking fundamentals room</li>
+                    <li>This is networking taught from a hacker's perspective — notice the difference</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~60 min</span></div>
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Lab: linuxjourney.com — Grasshopper track</li>
-                    <li>Complete all 5 Grasshopper modules</li>
+                    <li class="reading">O'Reilly: Ch. 3 — DNS, DHCP, HTTP/S, common ports</li>
+                    <li>Know ports 20/21/22/23/25/53/80/443/3389 cold</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Thu</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: Ch. 4–5 — package management (apt/yum), process management (ps, top, kill)
-                    </li>
+                    <li class="lab">TryHackMe: "What is Networking?" + "Intro to LAN" rooms</li>
+                    <li class="lab">Install Wireshark — capture your own network traffic, look at it</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Fri</span><span>~60 min</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Lab: OverTheWire Bandit levels 0–5</li>
-                    <li>Use only man pages — no guides</li>
+                    <li class="hunt">
+                      Challenge: open Wireshark and find a DNS query, an HTTP request, and a TCP handshake. Screenshot
+                      each.
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/learning-modern-linux/9781098108939/"
+                  href="https://learning.oreilly.com/library/view/comptia-security-study/9781394211418/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Learning Modern Linux</a
+                  ><span class="res-label">O'REILLY</span>CompTIA Security+ Study Guide</a
                 >
-                <a class="res-link res-free" href="https://linuxjourney.com" target="_blank">↗ linuxjourney.com</a>
-                <a class="res-link res-free" href="https://overthewire.org/wargames/bandit/" target="_blank"
-                  >↗ OverTheWire Bandit</a
+                <a class="res-link res-thm" href="https://tryhackme.com/path/outline/cybersecurity101" target="_blank"
+                  ><span class="res-label">THM</span>Cyber Security 101 Path (replaces Pre-Security, free)</a
                 >
-                <a
-                  class="res-link res-killercoda"
-                  href="https://killercoda.com/pawelpiwosz/course/linuxFundamentals"
-                  target="_blank"
-                  ><span class="res-label">KILLERCODA</span>Linux Fundamentals (free)</a
-                >
-                <a class="res-link res-roadmap" href="https://roadmap.sh/devops" target="_blank"
-                  ><span class="res-label">ROADMAP</span>DevOps Roadmap — bookmark this</a
+                <a class="res-link res-free" href="https://www.wireshark.org/download.html" target="_blank"
+                  >↗ Wireshark (free)</a
                 >
               </div>
             </div>
@@ -699,277 +717,159 @@
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Week 2</span>
-                <span class="week-title">Networking, SSH, Bash scripting basics</span>
-                <span class="week-due">Jun 11–17</span>
+                <span class="week-title">Linux — through an investigator's eyes</span>
+                <span class="week-due">Jun 15–21</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
                   <div class="day-label"><span>Mon</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>Linux Command Line</em> — Ch. 24–25 (networking: curl, wget, ssh, netstat)
+                    <li class="lab">
+                      TryHackMe: "Linux Fundamentals" Part 1–2 — note how every command is framed around what an
+                      attacker or investigator would use it for
                     </li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Tue</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Set up SSH key pair — connect to a VM without password</li>
-                    <li>Configure ~/.ssh/config for shortcuts</li>
+                    <li class="lab">TryHackMe: "Linux Fundamentals" Part 3</li>
+                    <li class="reading">
+                      O'Reilly: <em>The Practice of Network Security Monitoring</em> — Ch. 1 (what defenders see)
+                    </li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Wed</span><span>~90 min</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>Linux Command Line</em> — Ch. 26–27 (bash scripting: variables, loops, conditionals)
+                    <li class="lab">
+                      TryHackMe: "Linux PrivEsc" room — understand how attackers escalate on Linux. This makes every
+                      Linux command meaningful.
                     </li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <div class="day-label"><span>Thu/Fri</span><span>~90 min each</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Write bash script: backs up a folder to a timestamped archive</li>
-                    <li>Schedule it with cron to run nightly</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">OverTheWire Bandit levels 6–10</li>
-                    <li>Review week 1–2 notes. What stuck? What didn't?</li>
+                    <li class="lab">
+                      OverTheWire: Bandit levels 0–10 — but this time ask "what would an attacker learn from this?"
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
+                <a class="res-link res-thm" href="https://tryhackme.com/module/linux-fundamentals" target="_blank"
+                  ><span class="res-label">THM</span>Linux Fundamentals module</a
+                >
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/the-linux-command/9781492071235/"
+                  href="https://learning.oreilly.com/library/view/the-practice-of/9781593275099/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Linux Command Line, 2nd Ed.</a
+                  ><span class="res-label">O'REILLY</span>Practice of Network Security Monitoring</a
                 >
                 <a class="res-link res-free" href="https://overthewire.org/wargames/bandit/" target="_blank"
                   >↗ OverTheWire Bandit</a
                 >
-                <a class="res-link res-killercoda" href="https://killercoda.com/devopskloud" target="_blank"
-                  ><span class="res-label">KILLERCODA</span>DevOpsKloud Linux + Bash Labs (free)</a
-                >
               </div>
-              <div class="assignment">
-                <div class="assignment-label">⬡ Assignment 1.1 — Due Jun 18</div>
-                <div class="assignment-title">Bash Automation Script</div>
-                <div class="assignment-desc">
-                  Write a bash script that: (1) checks disk usage on all mounted drives, (2) emails an alert if any
-                  drive exceeds 80%, (3) logs results with a timestamp to a file. Push it to a new GitHub repo. This is
-                  your first portfolio piece.
+            </div>
+
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 3–4</span>
+                <span class="week-title">Security+ core concepts — threats, attacks, cryptography</span>
+                <span class="week-due">Jun 22 – Jul 8</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 3</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: Security+ Study Guide — Ch. 1–4 (threats, attacks, social engineering, malware types)
+                    </li>
+                    <li class="lab">
+                      TryHackMe: "Jr Penetration Tester" intro rooms — see attacks from the attacker side to understand
+                      what you'll be defending against
+                    </li>
+                  </ul>
                 </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 4</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Security+ Study Guide — Ch. 5–7 (cryptography, PKI, identity)</li>
+                    <li class="lab">TryHackMe: "Cryptography" room</li>
+                    <li>10 Security+ practice questions daily — Anki flashcards for acronyms</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/comptia-security-study/9781394211418/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>CompTIA Security+ Study Guide SY0-701</a
+                >
+                <a
+                  class="res-link res-thm"
+                  href="https://tryhackme.com/path/outline/jrpenetrationtester"
+                  target="_blank"
+                  ><span class="res-label">THM</span>Jr Pentester path (rebuilt 2026 — context building)</a
+                >
+                <a class="res-link res-free" href="https://apps.ankiweb.net" target="_blank"
+                  >↗ Anki flashcards (free)</a
+                >
               </div>
             </div>
           </div>
         </div>
 
-        <!-- MODULE 2 -->
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 1.2</span>
-            <span class="module-title">Linux+ Exam Prep + Systemd + Storage</span>
-            <span class="module-due due-active">Due: Jul 2, 2026</span>
-            <span class="chevron">▼</span>
-          </div>
-          <div class="module-body">
-            <div class="week">
-              <div class="week-header">
-                <span class="week-tag">Week 3</span>
-                <span class="week-title">Systemd, storage, LVM, filesystems</span>
-                <span class="week-due">Jun 18–24</span>
-              </div>
-              <div class="daily-grid">
-                <div class="day-card">
-                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>CompTIA Linux+ Study Guide</em> — Ch. 5 (systemd, services, targets)
-                    </li>
-                    <li>Start/stop/enable/disable 3 services manually</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 6 — disk management, partitioning, LVM</li>
-                    <li>Create a partition and mount it on a VM</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 7 — filesystems (ext4, xfs) and fstab</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 8 — security basics: firewalls (ufw/iptables), SELinux</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">10 Linux+ practice questions from certificationpractice.com</li>
-                    <li>Note every wrong answer — look it up</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/comptia-linux-study/9781394316328/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>CompTIA Linux+ Study Guide (6th Ed, XK0-006)</a
-                >
-                <a
-                  class="res-link res-paid"
-                  href="https://kodekloud.com/courses/the-linux-basics-course"
-                  target="_blank"
-                  ><span class="res-label">KODEKLOUD</span>Linux Basics + Labs (~$20/mo)</a
-                >
-                <a
-                  class="res-link res-free"
-                  href="https://certificationpractice.com/practice-exams/comptia-linux"
-                  target="_blank"
-                  >↗ Free practice tests</a
-                >
-              </div>
-            </div>
-
-            <div class="week">
-              <div class="week-header">
-                <span class="week-tag">Week 4</span>
-                <span class="week-title">Linux+ full cram — all objectives</span>
-                <span class="week-due">Jun 25 – Jul 1</span>
-              </div>
-              <div class="daily-grid">
-                <div class="day-card">
-                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Review Ch. 1–4 objectives (System Management)</li>
-                    <li>Flash-card any commands you keep forgetting</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Review Ch. 5–8 objectives (Security + Storage)</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Full 90-question practice exam (certificationpractice.com)</li>
-                    <li>Target: 80%+ before booking real exam</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li>Review wrong answers from practice exam</li>
-                    <li>Book CompTIA Linux+ exam at Pearson VUE (~$350)</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Final practice run — timed, no aids</li>
-                    <li>Rest. Don't cram the day before.</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/comptia-linux-study/9781394316328/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>CompTIA Linux+ Study Guide (6th Ed, XK0-006)</a
-                >
-                <a
-                  class="res-link res-paid"
-                  href="https://kodekloud.com/courses/the-linux-basics-course"
-                  target="_blank"
-                  ><span class="res-label">KODEKLOUD</span>Linux Labs (browser-based)</a
-                >
-                <a
-                  class="res-link res-free"
-                  href="https://certificationpractice.com/practice-exams/comptia-linux"
-                  target="_blank"
-                  >↗ Free practice tests</a
-                >
-              </div>
-              <div class="exam-block">
-                <div class="exam-label">📋 Certification Exam</div>
-                <div class="exam-title">CompTIA Linux+ (XK0-006)</div>
-                <div class="exam-meta">
-                  Book for week of Jul 2–4, 2026 &nbsp;·&nbsp; ~$350 &nbsp;·&nbsp; Pearson VUE &nbsp;·&nbsp; 90 min, 90
-                  questions
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- MODULE 3 -->
-        <div class="module">
-          <div class="module-header" onclick="toggleModule(this)">
-            <span class="module-num">MOD 1.3</span>
-            <span class="module-title">Python for DevOps</span>
-            <span class="module-due due-far">Due: Aug 5, 2026</span>
+            <span class="module-title">Security+ exam prep + home lab build</span>
+            <span class="module-due due-now">Due: Aug 5, 2026</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 5–6</span>
-                <span class="week-title">Python syntax, data types, file I/O</span>
-                <span class="week-due">Jul 2–15</span>
+                <span class="week-title">Security+ — architecture, cloud, operations, governance</span>
+                <span class="week-due">Jul 9–22</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <div class="day-label"><span>Week 5</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
                     <li class="reading">
-                      O'Reilly: <em>Python for DevOps</em> — Ch. 1–2 (Python basics, data types, control flow)
+                      O'Reilly: Security+ Ch. 8–10 (network security, cloud security, endpoint security)
+                    </li>
+                    <li class="lab">
+                      TryHackMe: "SOC Level 1" path — start the first 3 rooms. Note: you're doing this for the
+                      knowledge, not the career track.
                     </li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <div class="day-label"><span>Week 6</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 3 — working with files and the OS module</li>
-                    <li class="lab">Script: list all files in a dir, print size and modified date</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 4 — working with APIs (requests library)</li>
-                    <li class="lab">Script: call a public API, parse the JSON, print results</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Free exercise: automatetheboringstuff.com — pick 1 project chapter and build it</li>
+                    <li class="reading">O'Reilly: Security+ Ch. 11–13 (incident response, governance, risk)</li>
+                    <li class="lab">Blue Team Labs Online: first 2 free labs — get hands on a SIEM</li>
+                    <li>20 Security+ practice questions per day</li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/python-for-devops/9781492057680/"
+                  href="https://learning.oreilly.com/library/view/comptia-security-study/9781394211418/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Python for DevOps</a
+                  ><span class="res-label">O'REILLY</span>CompTIA Security+ Study Guide</a
                 >
-                <a class="res-link res-free" href="https://automatetheboringstuff.com" target="_blank"
-                  >↗ Automate the Boring Stuff (free)</a
+                <a class="res-link res-thm" href="https://tryhackme.com/path/outline/soclevel1" target="_blank"
+                  ><span class="res-label">THM</span>SOC Level 1 path (knowledge only)</a
+                >
+                <a class="res-link res-blueteam" href="https://blueteamlabs.online" target="_blank"
+                  ><span class="res-label">BTL</span>Blue Team Labs Online (free tier)</a
                 >
               </div>
             </div>
@@ -977,216 +877,224 @@
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 7–8</span>
-                <span class="week-title">Python automation + combined with Linux</span>
-                <span class="week-due">Jul 16–29</span>
+                <span class="week-title">Home lab setup + Security+ full cram</span>
+                <span class="week-due">Jul 23 – Aug 5</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <div class="day-label"><span>Week 7</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>Python for DevOps</em> — Ch. 5–6 (subprocess, running shell commands from Python)
-                    </li>
+                    <li class="lab">Build home lab: VirtualBox (free) + Windows 10 VM + Ubuntu VM</li>
+                    <li class="lab">Install Sysmon on Windows VM — start generating logs</li>
+                    <li class="lab">Install Security Onion (free SIEM/IDS) — connect it to your VMs</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Wed/Thu</span><span>~90 min each</span></div>
+                  <div class="day-label"><span>Week 8</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">
-                      Build: Python script that checks if a list of services is running, restarts any that are stopped,
-                      logs results
-                    </li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li>Push all scripts to GitHub with README files</li>
-                    <li>Review: could a hiring manager understand what these do?</li>
+                    <li class="lab">Full Security+ practice exam — target 85%+</li>
+                    <li>Book Security+ exam at Pearson VUE (~$400)</li>
+                    <li>Review every wrong answer — understand the why</li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
+                <a class="res-link res-free" href="https://www.virtualbox.org" target="_blank">↗ VirtualBox (free)</a>
+                <a class="res-link res-free" href="https://securityonion.net" target="_blank"
+                  >↗ Security Onion (free SIEM)</a
+                >
+                <a class="res-link res-free" href="https://github.com/SwiftOnSecurity/sysmon-config" target="_blank"
+                  >↗ Sysmon config (free)</a
+                >
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/python-for-devops/9781492057680/"
+                  href="https://learning.oreilly.com/certifications/9780138230791/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Python for DevOps</a
+                  ><span class="res-label">O'REILLY</span>Security+ Practice Tests</a
                 >
-                <a class="res-link res-free" href="https://github.com" target="_blank">↗ GitHub (free)</a>
               </div>
-              <div class="assignment">
-                <div class="assignment-label">⬡ Assignment 1.3 — Due Aug 5</div>
-                <div class="assignment-title">Python System Monitor Script</div>
-                <div class="assignment-desc">
-                  Build a Python script that: monitors CPU, memory, and disk usage every 60 seconds; writes metrics to a
-                  log file in CSV format; sends a simple alert (print to console or email) if any threshold is exceeded.
-                  Push to GitHub with a clear README. This will become the foundation of your portfolio project #1.
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">CompTIA Security+ (SY0-701)</div>
+                <div class="exam-meta">
+                  Book for week of Aug 3–7, 2026 &nbsp;·&nbsp; ~$400 &nbsp;·&nbsp; Pearson VUE &nbsp;·&nbsp; 90 min, 90
+                  questions
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- MODULE 4 -->
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
-            <span class="module-num">MOD 1.4</span>
-            <span class="module-title">AWS Free Tier Home Lab Setup</span>
-            <span class="module-due due-far">Due: Sep 3, 2026</span>
+            <span class="module-num">MOD 1.3</span>
+            <span class="module-title">Blue Team Lab 1 — BTL1 cert + SIEM basics</span>
+            <span class="module-due due-next">Due: Sep 7, 2026</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 9–12</span>
-                <span class="week-title">EC2, S3, IAM, VPC — hands on</span>
-                <span class="week-due">Aug 6 – Sep 3</span>
+                <span class="week-title">Blue Team Labs Level 1 (BTL1) cert — purpose-built for IR entry</span>
+                <span class="week-due">Aug 6 – Sep 7</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Week 9</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 9–10</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 1–2 (account setup, EC2, S3)</li>
-                    <li class="lab">Launch EC2 t2.micro, SSH in, install nginx, serve a page</li>
+                    <li class="reading">BTL1 course material: Phishing Analysis + Threat Intelligence domains</li>
+                    <li class="lab">Work through every BTL1 lab — they are fully hands-on, no multiple choice</li>
+                    <li class="hunt">
+                      This is your first taste of real investigation work — notice how it feels vs. Linux commands
+                    </li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 10</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 11–12</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 3 (IAM: users, roles, policies)</li>
-                    <li class="lab">Create IAM user with least privilege. Break it. Fix it.</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 11</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 4 (VPC, subnets, security groups)</li>
-                    <li class="lab">Build a VPC with public + private subnet from scratch</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 12</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Deploy your Python monitor script to EC2</li>
-                    <li>Set a billing alert at $5 — AWS free tier has traps</li>
-                    <li>Run your Python script on EC2 via SSH</li>
+                    <li class="reading">BTL1 course: SIEM + Digital Forensics + Incident Response domains</li>
+                    <li class="lab">Complete all BTL1 labs. The exam is 24 hours, open-book, fully practical.</li>
+                    <li class="lab">Blue Team Labs Online: complete 5 free investigation labs</li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/aws-cookbook/9781492092599/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>AWS Cookbook</a
+                <a class="res-link res-paid" href="https://securityblue.team/btl1" target="_blank"
+                  ><span class="res-label">BTL</span>BTL1 Certification (~$500 — includes exam)</a
                 >
-                <a class="res-link res-free" href="https://aws.amazon.com/free" target="_blank">↗ AWS Free Tier</a>
+                <a class="res-link res-blueteam" href="https://blueteamlabs.online" target="_blank"
+                  ><span class="res-label">BTL</span>Blue Team Labs Online</a
+                >
+                <a class="res-link res-thm" href="https://tryhackme.com/path/outline/soclevel1" target="_blank"
+                  ><span class="res-label">THM</span>SOC Level 1 path (parallel study)</a
+                >
+              </div>
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">Blue Team Labs Level 1 (BTL1)</div>
+                <div class="exam-meta">
+                  Sit week of Sep 1–7 &nbsp;·&nbsp; ~$500 (includes exam retake) &nbsp;·&nbsp; 24-hour practical exam —
+                  fully hands-on, no multiple choice
+                </div>
+              </div>
+              <div class="skip-box">
+                <div class="skip-label">⚡ Why BTL1 skips the Tier 1 trap</div>
+                <div class="skip-text">
+                  BTL1 is a practical cert that proves you can actually investigate — not just pass a multiple choice
+                  exam. Employers hiring Jr. IR Analysts specifically look for this over Security+ alone. It signals
+                  you're Tier 2 ready from day one. This cert + your 5 years helpdesk experience + a home lab is a
+                  legitimate application stack for IR Analyst roles at mid-size companies.
+                </div>
               </div>
               <div class="milestone">
-                <div class="milestone-label">✓ Phase 1 Complete — Sep 3, 2026</div>
+                <div class="milestone-label">✓ Phase 1 Complete — Sep 7, 2026</div>
                 <ul class="milestone-items">
-                  <li>CompTIA Linux+ certified</li>
-                  <li>5+ Python automation scripts on GitHub</li>
-                  <li>AWS lab running with EC2, S3, IAM, VPC</li>
-                  <li>Comfortable SSHing into remote machines</li>
+                  <li>CompTIA Security+ certified</li>
+                  <li>BTL1 certified (practical, hands-on)</li>
+                  <li>Home lab running: Windows + Linux VMs, Sysmon, Security Onion</li>
+                  <li>Can investigate a phishing email end-to-end</li>
+                  <li>First job applications for Jr. IR Analyst roles</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end p1 -->
 
-      <!-- ==================== PHASE 2 ==================== -->
+      <!-- ========== PHASE 2 ========== -->
       <div id="p2" class="phase p2">
         <div class="phase-header">
           <div class="phase-dot"></div>
           <div>
-            <div class="phase-name">Phase 2 — Cloud Fundamentals + Git + CI/CD</div>
+            <div class="phase-name">Phase 2 — Incident Response Core Skills</div>
             <div class="phase-goal">
-              Goal: Pass AWS Cloud Practitioner · Deploy first live project · Start job search
+              Goal: Master the IR lifecycle · SIEM + log analysis · Windows + Linux forensics · CySA+ cert
             </div>
           </div>
-          <div class="phase-dates">Sep 4 – Dec 3, 2026</div>
+          <div class="phase-dates">Sep 8 – Dec 8, 2026</div>
         </div>
 
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 2.1</span>
-            <span class="module-title">AWS Cloud Practitioner Cert</span>
-            <span class="module-due due-far">Due: Oct 7, 2026</span>
+            <span class="module-title">SIEM + Log Analysis — Splunk + ELK</span>
+            <span class="module-due due-next">Due: Oct 8, 2026</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 13–16</span>
-                <span class="week-title">AWS core services + CCP exam</span>
-                <span class="week-due">Sep 4 – Oct 1</span>
+                <span class="week-title">Splunk fundamentals + log hunting</span>
+                <span class="week-due">Sep 8 – Oct 8</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
                   <div class="day-label"><span>Week 13</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>AWS Certified Cloud Practitioner Study Guide</em> — Ch. 1–4 (compute, storage,
-                      databases)
-                    </li>
+                    <li class="reading">O'Reilly: <em>Splunk: Understanding Security Intelligence</em> — Ch. 1–3</li>
+                    <li class="lab">Splunk free training: Splunk Fundamentals 1 (free, self-paced)</li>
+                    <li class="lab">Ingest your home lab's Sysmon logs into Splunk free tier</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Week 14</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 5–7 (networking, security, pricing models)</li>
-                    <li class="lab">Use AWS console to explore each service covered</li>
+                    <li class="lab">TryHackMe: "Splunk: Basics" + "Splunk 2" rooms</li>
+                    <li class="hunt">
+                      Challenge: find 3 suspicious events in your home lab logs — document findings in a short report
+                    </li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Week 15</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 8–10 (support plans, billing, shared responsibility)</li>
-                    <li class="lab">Full practice exam — O'Reilly has CCP practice tests</li>
+                    <li class="reading">
+                      O'Reilly: <em>The Practice of Network Security Monitoring</em> — Ch. 4–6 (log collection,
+                      analysis)
+                    </li>
+                    <li class="lab">TryHackMe: "Investigating with ELK 101" room</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Week 16</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li>Review all wrong answers from practice exams</li>
-                    <li>Book and sit AWS CCP exam (~$100)</li>
-                    <li class="lab">Target 80%+ on 3 practice tests before sitting</li>
+                    <li class="lab">Blue Team Labs Online: 3 SIEM investigation labs</li>
+                    <li class="hunt">
+                      Write your first formal IR report: what happened, timeline, indicators of compromise
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
+                  class="res-link res-splunk"
+                  href="https://www.splunk.com/en_us/training/free-courses/overview.html"
+                  target="_blank"
+                  ><span class="res-label">SPLUNK</span>Splunk Free Training Catalog (Fundamentals here)</a
+                >
+                <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/aws-certified-cloud/9781394235636/"
+                  href="https://learning.oreilly.com/library/view/the-practice-of/9781593275099/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>AWS CCP Study Guide (2nd Ed, CLF-C02)</a
+                  ><span class="res-label">O'REILLY</span>Practice of Network Security Monitoring</a
                 >
-                <a
-                  class="res-link res-awssb"
-                  href="https://skillbuilder.aws/learn/94T2BEN85A/aws-cloud-practitioner-essentials/8D79F3AVR7"
-                  target="_blank"
-                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Practitioner Essentials (free)</a
+                <a class="res-link res-thm" href="https://tryhackme.com/room/splunk101" target="_blank"
+                  ><span class="res-label">THM</span>Splunk rooms</a
                 >
-                <a
-                  class="res-link res-awssb"
-                  href="https://skillbuilder.aws/learn/FU5WCYVGKY/aws-cloud-quest-cloud-practitioner/JF9TKU68GT"
-                  target="_blank"
-                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Quest: CCP (free RPG labs)</a
-                >
-                <a class="res-link res-free" href="https://www.youtube.com/watch?v=NhDYbskXRgc" target="_blank"
-                  >↗ freeCodeCamp CCP video (free backup)</a
+                <a class="res-link res-blueteam" href="https://blueteamlabs.online" target="_blank"
+                  ><span class="res-label">BTL</span>Blue Team Labs Online</a
                 >
               </div>
-              <div class="exam-block">
-                <div class="exam-label">📋 Certification Exam</div>
-                <div class="exam-title">AWS Certified Cloud Practitioner (CLF-C02)</div>
-                <div class="exam-meta">
-                  Book for week of Sep 28 – Oct 4 &nbsp;·&nbsp; ~$100 &nbsp;·&nbsp; Online or test center &nbsp;·&nbsp;
-                  90 min, 65 questions
+              <div class="assignment">
+                <div class="assignment-label">⬡ Assignment 2.1 — Due Oct 8</div>
+                <div class="assignment-title">First Formal IR Report</div>
+                <div class="assignment-desc">
+                  Using your home lab or a Blue Team Labs scenario: document a full incident investigation. Include:
+                  executive summary, timeline of events, indicators of compromise (IOCs), root cause analysis, and
+                  recommended remediation. This is the writing skill that gets you hired over other candidates —
+                  practice it now.
                 </div>
               </div>
             </div>
@@ -1196,113 +1104,67 @@
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 2.2</span>
-            <span class="module-title">Git + GitHub + CI/CD with GitHub Actions</span>
-            <span class="module-due due-far">Due: Nov 5, 2026</span>
+            <span class="module-title">Digital Forensics — Windows + Linux artifacts</span>
+            <span class="module-due due-far">Due: Nov 8, 2026</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
-                <span class="week-tag">Weeks 17–18</span>
-                <span class="week-title">Git version control</span>
-                <span class="week-due">Oct 8–21</span>
+                <span class="week-tag">Weeks 17–20</span>
+                <span class="week-title">Windows forensics + Linux forensics</span>
+                <span class="week-due">Oct 9 – Nov 8</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>Head First Git</em> — Ch. 1–4 (commit, branch, merge, rebase)</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">learngitbranching.js.org — complete all Main levels</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Create a GitHub repo for each of your scripts so far</li>
-                    <li>Add .gitignore and meaningful commit messages</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li>Submit a pull request on your own repo — review it yourself</li>
-                    <li>This is the workflow you'll use every day on the job</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/head-first-git/9781492092506/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>Head First Git</a
-                >
-                <a class="res-link res-free" href="https://learngitbranching.js.org" target="_blank"
-                  >↗ Learn Git Branching (free)</a
-                >
-              </div>
-            </div>
-
-            <div class="week">
-              <div class="week-header">
-                <span class="week-tag">Weeks 19–20</span>
-                <span class="week-title">GitHub Actions CI/CD pipelines</span>
-                <span class="week-due">Oct 22 – Nov 4</span>
-              </div>
-              <div class="daily-grid">
-                <div class="day-card">
-                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <div class="day-label"><span>Weeks 17–18</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
                     <li class="reading">
-                      O'Reilly: <em>Learning GitHub Actions</em> — Ch. 1–3 (workflows, triggers, jobs, steps)
+                      O'Reilly: <em>The Art of Memory Forensics</em> — Ch. 1–4 (Windows memory analysis)
+                    </li>
+                    <li class="lab">TryHackMe: "Windows Forensics 1 + 2" rooms</li>
+                    <li class="lab">TryHackMe: "Autopsy" room — registry, browser, file artifacts</li>
+                    <li class="hunt">
+                      Know: prefetch, shimcache, amcache, LNK files, MFT — where attackers leave traces
                     </li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <div class="day-label"><span>Weeks 19–20</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Write a workflow that runs your Python script tests on every push</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 4–5 (secrets, environments, deployment)</li>
-                    <li class="lab">Add a deploy step: push to EC2 on merge to main</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Break the pipeline intentionally — read the error logs</li>
-                    <li>Fix it. Understanding failure messages is a core skill.</li>
+                    <li class="lab">TryHackMe: "Linux Forensics" + "Linux Server Forensics" rooms</li>
+                    <li class="lab">TryHackMe: "Wireshark: Packet Operations" room — network forensics</li>
+                    <li class="lab">Blue Team Labs Online: 3 forensics investigation labs</li>
+                    <li class="hunt">
+                      Challenge: image your own home lab Windows VM, find 3 artifacts that tell a story
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/learning-github-actions/9781098131067/"
+                  href="https://learning.oreilly.com/library/view/the-art-of/9781118824993/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Learning GitHub Actions</a
+                  ><span class="res-label">O'REILLY</span>The Art of Memory Forensics</a
                 >
-                <a class="res-link res-free" href="https://docs.github.com/en/actions" target="_blank"
-                  >↗ GitHub Actions docs</a
+                <a
+                  class="res-link res-thm"
+                  href="https://tryhackme.com/module/digital-forensics-and-incident-response"
+                  target="_blank"
+                  ><span class="res-label">THM</span>DFIR module</a
+                >
+                <a class="res-link res-blueteam" href="https://blueteamlabs.online" target="_blank"
+                  ><span class="res-label">BTL</span>Blue Team Labs Online</a
                 >
               </div>
               <div class="assignment">
-                <div class="assignment-label">⬡ Portfolio Project #1 — Due Nov 5</div>
-                <div class="assignment-title">Live Deployed App with Full CI/CD Pipeline</div>
+                <div class="assignment-label">⬡ Assignment 2.2 — Due Nov 8</div>
+                <div class="assignment-title">Full DFIR Case Report</div>
                 <div class="assignment-desc">
-                  Deploy your Python monitor script to EC2 via GitHub Actions. Requirements: (1) push to main triggers
-                  the pipeline, (2) pipeline runs tests, (3) on pass, deploys to EC2 via SSH, (4) CloudWatch billing
-                  alarm is set. Write a README with an architecture diagram (even hand-drawn and photographed is fine).
-                  This is your first real portfolio project.
+                  Complete a full Digital Forensics + IR case from a Blue Team Labs Online investigation lab. Document
+                  everything: disk artifacts, memory artifacts, network IOCs, attacker timeline, and attribution
+                  hypotheses. Format it like a real incident report. Put it on GitHub — this is portfolio piece #1.
                 </div>
               </div>
             </div>
@@ -1312,139 +1174,143 @@
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 2.3</span>
-            <span class="module-title">Job Search Launch + SAA Study Begins</span>
-            <span class="module-due due-far">Due: Dec 3, 2026</span>
+            <span class="module-title">CySA+ Cert Prep + Job Search</span>
+            <span class="module-due due-far">Due: Dec 8, 2026</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 21–24</span>
-                <span class="week-title">LinkedIn, resume, first applications + SAA kickoff</span>
-                <span class="week-due">Nov 5 – Dec 3</span>
+                <span class="week-title">CySA+ exam prep + active job applications</span>
+                <span class="week-due">Nov 9 – Dec 8</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Week 21</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 21–22</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li>Rewrite LinkedIn — lead with certs, then helpdesk context</li>
-                    <li>Add GitHub portfolio link prominently</li>
-                    <li>Target titles: Jr. DevOps Engineer, Cloud Support Eng, Infrastructure Eng</li>
+                    <li class="reading">
+                      O'Reilly: <em>CompTIA CySA+ Study Guide</em> — Ch. 1–6 (threat intel, vulnerability mgmt, IR)
+                    </li>
+                    <li class="lab">TryHackMe: "Threat Intelligence Tools" room</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Weeks 22–24</span><span>~8 hrs/wk</span></div>
+                  <div class="day-label"><span>Weeks 23–24</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li>Apply to 5 roles per week minimum</li>
-                    <li class="reading">
-                      O'Reilly: <em>AWS Solutions Architect Study Guide</em> — Ch. 1–4 (start early)
-                    </li>
-                    <li class="lab">Continue building in AWS lab every day — 30 min minimum</li>
+                    <li class="reading">O'Reilly: CySA+ Ch. 7–10 + full practice exams</li>
+                    <li>Apply to 5 roles/week: Jr. IR Analyst, Security Analyst Tier 2, DFIR Analyst</li>
+                    <li class="exam">★ Sit CySA+ exam (~$400) — target 85%+ on practice first</li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/aws-certified-solutions/9781119982623/"
+                  href="https://learning.oreilly.com/library/view/comptia-cysa-study/9781394182909/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>AWS SAA Study Guide (start here)</a
+                  ><span class="res-label">O'REILLY</span>CompTIA CySA+ Study Guide CS0-003</a
                 >
-                <a class="res-link res-paid" href="https://learn.cantrill.io" target="_blank"
-                  >↗ Adrian Cantrill SAA (~$40 — optional upgrade)</a
+                <a class="res-link res-thm" href="https://tryhackme.com/room/threatinteltools" target="_blank"
+                  ><span class="res-label">THM</span>Threat Intelligence Tools room</a
                 >
               </div>
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">CompTIA CySA+ (CS0-003)</div>
+                <div class="exam-meta">
+                  Book for week of Dec 1–8 &nbsp;·&nbsp; ~$400 &nbsp;·&nbsp; Pearson VUE &nbsp;·&nbsp; 165 min, 85
+                  questions — includes performance-based questions
+                </div>
+              </div>
               <div class="milestone">
-                <div class="milestone-label">✓ Phase 2 Complete — Dec 3, 2026</div>
+                <div class="milestone-label">✓ Phase 2 Complete — Dec 8, 2026</div>
                 <ul class="milestone-items">
-                  <li>AWS Cloud Practitioner certified</li>
-                  <li>Portfolio project #1 live on GitHub + EC2</li>
-                  <li>CI/CD pipeline deployed and working</li>
-                  <li>Job applications actively in flight</li>
-                  <li>SAA study started</li>
+                  <li>CySA+ certified</li>
+                  <li>Can investigate Windows + Linux artifacts independently</li>
+                  <li>Portfolio: 1 formal DFIR case report on GitHub</li>
+                  <li>Splunk and ELK comfortable — writing SPL queries</li>
+                  <li>Job applications active — targeting Tier 2 IR Analyst roles</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end p2 -->
 
-      <!-- ==================== PHASE 3 ==================== -->
+      <!-- ========== PHASE 3 ========== -->
       <div id="p3" class="phase p3">
         <div class="phase-header">
           <div class="phase-dot"></div>
           <div>
-            <div class="phase-name">Phase 3 — Docker, Terraform + AWS SAA</div>
-            <div class="phase-goal">Goal: Pass AWS SAA · Master containers and IaC · Portfolio project #2</div>
+            <div class="phase-name">Phase 3 — Threat Hunting</div>
+            <div class="phase-goal">
+              Goal: Hunt proactively · MITRE ATT&CK mastery · Build hunting playbooks · Portfolio project #2
+            </div>
           </div>
-          <div class="phase-dates">Dec 4, 2026 – Mar 4, 2027</div>
+          <div class="phase-dates">Dec 9, 2026 – Mar 9, 2027</div>
         </div>
 
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 3.1</span>
-            <span class="module-title">Docker + Containers</span>
-            <span class="module-due due-far">Due: Jan 7, 2027</span>
+            <span class="module-title">MITRE ATT&CK Framework + Threat Intelligence</span>
+            <span class="module-due due-far">Due: Jan 9, 2027</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 25–28</span>
-                <span class="week-title">Images, Dockerfiles, Compose</span>
-                <span class="week-due">Dec 4, 2026 – Jan 7, 2027</span>
+                <span class="week-title">ATT&CK, threat intel feeds, hypothesis-driven hunting</span>
+                <span class="week-due">Dec 9, 2026 – Jan 9, 2027</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
                   <div class="day-label"><span>Week 25</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>Docker Deep Dive</em> — Ch. 1–5 (images, containers, networking)
-                    </li>
-                    <li class="lab">Pull an nginx image. Run it. Exec into it.</li>
+                    <li class="reading">O'Reilly: <em>Threat Hunting with Elastic Stack</em> — Ch. 1–3</li>
+                    <li class="lab">MITRE ATT&CK Navigator: map every technique you've investigated so far</li>
+                    <li class="lab">TryHackMe: "MITRE" room</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Week 26</span><span>~8 hrs</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 6–8 (Dockerfiles, volumes, networks)</li>
-                    <li class="lab">Write a Dockerfile for your Python monitor script</li>
+                    <li class="lab">TryHackMe: "Threat Intelligence Tools" + "OpenCTI" rooms</li>
+                    <li class="hunt">
+                      Build your first threat intel report on a real threat actor (APT28 or Lazarus) using open sources
+                      only
+                    </li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 27</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 27–28</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 9–10 (Docker Compose, multi-container apps)</li>
-                    <li class="lab">Use Docker Compose to run app + a Postgres DB together</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 28</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Push Docker image to AWS ECR (Elastic Container Registry)</li>
-                    <li>Update GitHub Actions pipeline to build + push Docker image on deploy</li>
+                    <li class="reading">
+                      O'Reilly: <em>Threat Hunting with Elastic Stack</em> — Ch. 4–6 (hypothesis building, hunt
+                      execution)
+                    </li>
+                    <li class="lab">HackTheBox: Blue Labs — complete 3 defensive challenges</li>
+                    <li class="hunt">
+                      Write your first hunting playbook: "Hunt for PowerShell-based lateral movement"
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/docker-deep-dive/9781800565135/"
+                  href="https://learning.oreilly.com/library/view/threat-hunting-with/9781801073783/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Docker Deep Dive</a
+                  ><span class="res-label">O'REILLY</span>Threat Hunting with Elastic Stack</a
                 >
-                <a
-                  class="res-link res-paid"
-                  href="https://kodekloud.com/courses/docker-for-the-absolute-beginner"
-                  target="_blank"
-                  ><span class="res-label">KODEKLOUD</span>Docker for Beginners + Labs</a
+                <a class="res-link res-free" href="https://attack.mitre.org" target="_blank">↗ MITRE ATT&CK (free)</a>
+                <a class="res-link res-thm" href="https://tryhackme.com/room/mitre" target="_blank"
+                  ><span class="res-label">THM</span>MITRE room</a
                 >
-                <a class="res-link res-killercoda" href="https://killercoda.com/docker" target="_blank"
-                  ><span class="res-label">KILLERCODA</span>Docker Hands-On Labs (free)</a
-                >
-                <a class="res-link res-free" href="https://docs.docker.com/get-started/" target="_blank"
-                  >↗ Docker docs (free reference)</a
+                <a class="res-link res-htb" href="https://app.hackthebox.com/sherlocks" target="_blank"
+                  ><span class="res-label">HTB</span>HackTheBox Sherlocks (blue team labs)</a
                 >
               </div>
             </div>
@@ -1454,253 +1320,154 @@
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 3.2</span>
-            <span class="module-title">Terraform — Infrastructure as Code</span>
-            <span class="module-due due-far">Due: Feb 4, 2027</span>
+            <span class="module-title">Active hunting — simulated attacks in home lab</span>
+            <span class="module-due due-far">Due: Mar 9, 2027</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
-                <span class="week-tag">Weeks 29–32</span>
-                <span class="week-title">Providers, resources, state, modules</span>
-                <span class="week-due">Jan 8 – Feb 4, 2027</span>
+                <span class="week-tag">Weeks 29–36</span>
+                <span class="week-title">Simulate attacks — then hunt for them yourself</span>
+                <span class="week-due">Jan 10 – Mar 9, 2027</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Week 29</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 29–30</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>Terraform: Up and Running</em> — Ch. 1–2 (why IaC, basic syntax)
-                    </li>
                     <li class="lab">
-                      Provision an EC2 instance entirely through Terraform — delete your console habit
+                      Install Atomic Red Team (free) on your Windows VM — run T1059 (PowerShell) techniques
                     </li>
+                    <li class="hunt">
+                      Switch to defender mode: find every artifact left behind in Splunk/Security Onion
+                    </li>
+                    <li class="reading">O'Reilly: <em>Crafting the InfoSec Playbook</em> — Ch. 1–4</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 30</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 31–32</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 3–4 (state management, remote state in S3)</li>
-                    <li class="lab">Move Terraform state to S3 backend</li>
+                    <li class="lab">Atomic Red Team: run T1078 (Valid Accounts) + T1003 (Credential Dumping)</li>
+                    <li class="hunt">Document every IOC — build a hunting hypothesis for each</li>
+                    <li class="lab">HackTheBox Sherlocks: complete "Noted", "Litter", "Meerkat" challenges</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 31</span><span>~8 hrs</span></div>
+                  <div class="day-label"><span>Weeks 33–36</span><span>~8 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 5–6 (modules, reusable infrastructure)</li>
-                    <li class="lab">Build a reusable VPC module</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 32</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Destroy and recreate your entire AWS lab using only Terraform</li>
-                    <li>This is the muscle memory that gets you hired</li>
+                    <li class="lab">Build 3 formal hunting playbooks from your simulations</li>
+                    <li class="lab">TryHackMe: "Tactically Responding to Threat Intelligence" room</li>
+                    <li class="hunt">
+                      Portfolio project #2: publish 2 hunting playbooks on GitHub with full methodology
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
+                <a class="res-link res-free" href="https://github.com/redcanaryco/atomic-red-team" target="_blank"
+                  >↗ Atomic Red Team (free)</a
+                >
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/terraform-up-and/9781098116736/"
+                  href="https://learning.oreilly.com/library/view/crafting-the-infosec/9781491913598/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Terraform: Up and Running, 3rd Ed.</a
+                  ><span class="res-label">O'REILLY</span>Crafting the InfoSec Playbook</a
                 >
-                <a class="res-link res-free" href="https://developer.hashicorp.com/terraform/tutorials" target="_blank"
-                  >↗ HashiCorp tutorials (free reference)</a
+                <a class="res-link res-htb" href="https://app.hackthebox.com/sherlocks" target="_blank"
+                  ><span class="res-label">HTB</span>HackTheBox Sherlocks</a
                 >
+                <a class="res-link res-free" href="https://github.com" target="_blank">↗ GitHub (portfolio)</a>
               </div>
               <div class="assignment">
-                <div class="assignment-label">⬡ Portfolio Project #2 — Due Feb 4</div>
-                <div class="assignment-title">Full IaC + Containerized Deployment Pipeline</div>
+                <div class="assignment-label">⬡ Portfolio Project #2 — Due Mar 9</div>
+                <div class="assignment-title">Threat Hunting Playbook Repository</div>
                 <div class="assignment-desc">
-                  Terraform provisions all AWS infrastructure (VPC, EC2, S3, ECR). GitHub Actions builds Docker image,
-                  pushes to ECR, deploys container to EC2. CloudWatch monitoring wired up. All code on GitHub with
-                  architecture diagram in README. This is a job interview conversation piece — be ready to walk through
-                  every line.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="module">
-          <div class="module-header" onclick="toggleModule(this)">
-            <span class="module-num">MOD 3.3</span>
-            <span class="module-title">AWS Solutions Architect Associate (SAA)</span>
-            <span class="module-due due-far">Due: Mar 4, 2027</span>
-            <span class="chevron">▼</span>
-          </div>
-          <div class="module-body">
-            <div class="week">
-              <div class="week-header">
-                <span class="week-tag">Weeks 33–36</span>
-                <span class="week-title">Deep AWS architecture + exam</span>
-                <span class="week-due">Feb 5 – Mar 4, 2027</span>
-              </div>
-              <div class="daily-grid">
-                <div class="day-card">
-                  <div class="day-label"><span>Week 33</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">
-                      O'Reilly: <em>AWS SAA Study Guide</em> — networking deep dive (VPC, Route53, CloudFront, ALB)
-                    </li>
-                    <li class="lab">Build a multi-AZ VPC with load balancer in your lab</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 34</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Storage + databases (S3, EBS, EFS, RDS, DynamoDB)</li>
-                    <li class="lab">Spin up an RDS instance — connect from EC2</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 35</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Serverless (Lambda, API Gateway, SQS, SNS) + HA patterns</li>
-                    <li class="lab">3 full practice exams — O'Reilly has SAA practice tests</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 36</span><span>~8 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li>Review every wrong answer — understand the why not just the what</li>
-                    <li>Sit AWS SAA exam (~$300)</li>
-                    <li>Target: 80%+ on practice tests before sitting</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/aws-certified-solutions/9781119982623/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>AWS SAA Study Guide, 4th Ed.</a
-                >
-                <a
-                  class="res-link res-awssb"
-                  href="https://skillbuilder.aws/learn/TFDQJZ1UV5/architecting-on-aws/DPS7CTFY8J"
-                  target="_blank"
-                  ><span class="res-label">AWS SKILL BUILDER</span>Architecting on AWS (free)</a
-                >
-                <a class="res-link res-awssb" href="https://skillbuilder.aws/cloudquest" target="_blank"
-                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Quest: Solutions Architect (free)</a
-                >
-                <a class="res-link res-roadmap" href="https://roadmap.sh/aws" target="_blank"
-                  ><span class="res-label">ROADMAP</span>AWS Roadmap — check gaps</a
-                >
-                <a class="res-link res-paid" href="https://learn.cantrill.io" target="_blank"
-                  >↗ Adrian Cantrill SAA (~$40 — highly recommended supplement)</a
-                >
-                <a
-                  class="res-link res-paid"
-                  href="https://www.udemy.com/course/practice-exams-aws-certified-solutions-architect-associate/"
-                  target="_blank"
-                  >↗ Tutorials Dojo practice exams (~$15)</a
-                >
-              </div>
-              <div class="exam-block">
-                <div class="exam-label">📋 Certification Exam</div>
-                <div class="exam-title">AWS Certified Solutions Architect – Associate (SAA-C03)</div>
-                <div class="exam-meta">
-                  Book for week of Feb 24 – Mar 4 &nbsp;·&nbsp; ~$300 &nbsp;·&nbsp; Pearson VUE or online &nbsp;·&nbsp;
-                  130 min, 65 questions
+                  GitHub repo containing 3 formal hunting playbooks. Each playbook: maps to a MITRE ATT&CK technique,
+                  documents the hypothesis, lists data sources and queries (Splunk SPL or KQL), shows example artifacts,
+                  and gives a clear "what to do if found" response. This is a rare, tangible portfolio piece that most
+                  candidates at this level don't have.
                 </div>
               </div>
               <div class="milestone">
-                <div class="milestone-label">✓ Phase 3 Complete — Mar 4, 2027</div>
+                <div class="milestone-label">✓ Phase 3 Complete — Mar 9, 2027</div>
                 <ul class="milestone-items">
-                  <li>AWS Solutions Architect Associate certified</li>
-                  <li>Comfortable with Docker and containerization</li>
-                  <li>Can provision full AWS infra from scratch with Terraform</li>
-                  <li>Portfolio project #2 live and presentable</li>
-                  <li>Job interviews likely in progress</li>
+                  <li>Can run and hunt simulated ATT&CK techniques in a home lab</li>
+                  <li>3 formal hunting playbooks on GitHub</li>
+                  <li>Comfortable with MITRE ATT&CK Navigator</li>
+                  <li>HackTheBox Sherlocks: 5+ completed challenges</li>
+                  <li>Likely interviewing or employed in first security role by now</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end p3 -->
 
-      <!-- ==================== PHASE 4 ==================== -->
+      <!-- ========== PHASE 4 ========== -->
       <div id="p4" class="phase p4">
         <div class="phase-header">
           <div class="phase-dot"></div>
           <div>
-            <div class="phase-name">Phase 4 — Kubernetes + SRE Practices</div>
+            <div class="phase-name">Phase 4 — Detection Engineering</div>
             <div class="phase-goal">
-              Goal: K8s fundamentals · SRE mindset · Portfolio project #3 · First role landed
+              Goal: Write detection rules · Python automation · Sigma rules · Portfolio project #3
             </div>
           </div>
-          <div class="phase-dates">Mar 5 – Jun 4, 2027</div>
+          <div class="phase-dates">Mar 10 – Jun 8, 2027</div>
         </div>
 
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 4.1</span>
-            <span class="module-title">Kubernetes Fundamentals</span>
-            <span class="module-due due-far">Due: Apr 7, 2027</span>
+            <span class="module-title">Detection rule writing — Sigma + YARA + Splunk</span>
+            <span class="module-due due-far">Due: Apr 10, 2027</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 37–40</span>
-                <span class="week-title">Pods, deployments, services, ingress</span>
-                <span class="week-due">Mar 5 – Apr 7, 2027</span>
+                <span class="week-title">Write your first detection rules from your hunt playbooks</span>
+                <span class="week-due">Mar 10 – Apr 10, 2027</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Week 37</span><span>~6 hrs</span></div>
+                  <div class="day-label"><span>Weeks 37–38</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
                     <li class="reading">
-                      O'Reilly: <em>Kubernetes: Up and Running</em> — Ch. 1–4 (architecture, pods, deployments)
+                      O'Reilly: <em>Security Monitoring with Wazuh</em> — Ch. 1–4 (detection rules architecture)
                     </li>
-                    <li class="lab">Install minikube locally. Deploy your Docker app.</li>
+                    <li class="lab">Convert your hunting playbooks into Sigma rules (generic detection format)</li>
+                    <li class="lab">TryHackMe: "YARA" room — write file-based detection rules</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 38</span><span>~6 hrs</span></div>
+                  <div class="day-label"><span>Weeks 39–40</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 5–7 (services, ingress, configmaps, secrets)</li>
-                    <li class="lab">Expose your app with a LoadBalancer service</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 39</span><span>~6 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="reading">O'Reilly: Ch. 8–9 (namespaces, resource limits, autoscaling)</li>
-                    <li class="lab">Set CPU/memory limits. Watch what happens when you exceed them.</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 40</span><span>~6 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Deploy your Dockerized app to a free EKS trial or minikube</li>
-                    <li>Provision the cluster with Terraform</li>
+                    <li class="lab">
+                      Deploy your Sigma rules into Splunk — test against your Atomic Red Team simulations
+                    </li>
+                    <li class="hunt">
+                      Tune rules to reduce false positives — this is the real Detection Engineering skill
+                    </li>
+                    <li class="reading">
+                      O'Reilly: <em>Threat Hunting with Elastic Stack</em> — Ch. 7–9 (building detections)
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/kubernetes-up-and/9781098110192/"
+                  href="https://learning.oreilly.com/library/view/security-monitoring-with/9781837632152/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Kubernetes: Up and Running, 3rd Ed.</a
+                  ><span class="res-label">O'REILLY</span>Security Monitoring with Wazuh</a
                 >
-                <a
-                  class="res-link res-paid"
-                  href="https://kodekloud.com/courses/cka-certification-course-certified-kubernetes-administrator"
-                  target="_blank"
-                  ><span class="res-label">KODEKLOUD</span>CKA Course + Practice Labs</a
+                <a class="res-link res-free" href="https://github.com/SigmaHQ/sigma" target="_blank"
+                  >↗ Sigma rules (free)</a
                 >
-                <a class="res-link res-killercoda" href="https://killercoda.com/killer-shell-cka" target="_blank"
-                  ><span class="res-label">KILLERCODA</span>CKA Scenarios + K8s Playground (free)</a
-                >
-                <a class="res-link res-free" href="https://kubernetes.io/docs/tutorials/" target="_blank"
-                  >↗ K8s official tutorials (free)</a
+                <a class="res-link res-thm" href="https://tryhackme.com/room/threathuntingwithyara" target="_blank"
+                  ><span class="res-label">THM</span>Threat Hunting with YARA room</a
                 >
               </div>
             </div>
@@ -1710,63 +1477,51 @@
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 4.2</span>
-            <span class="module-title">SRE Practices — Observability + Incident Response</span>
-            <span class="module-due due-far">Due: May 7, 2027</span>
+            <span class="module-title">Python for Detection — automating the hunt</span>
+            <span class="module-due due-far">Due: May 10, 2027</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 41–44</span>
-                <span class="week-title">Monitoring, SLOs, runbooks, postmortems</span>
-                <span class="week-due">Apr 8 – May 7, 2027</span>
+                <span class="week-title">Python scripting for security automation</span>
+                <span class="week-due">Apr 11 – May 10, 2027</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
-                  <div class="day-label"><span>Week 41</span><span>~6 hrs</span></div>
+                  <div class="day-label"><span>Weeks 41–42</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
                     <li class="reading">
-                      O'Reilly: <em>Site Reliability Engineering</em> (Google SRE Book) — Ch. 1–4 (what SRE is, SLOs,
-                      error budgets)
+                      O'Reilly: <em>Python for Security and Networking</em> — Ch. 1–4 (Python basics in a security
+                      context)
                     </li>
+                    <li class="lab">Script: pull IOCs from a threat intel feed and check them against your SIEM</li>
                   </ul>
                 </div>
                 <div class="day-card">
-                  <div class="day-label"><span>Week 42</span><span>~6 hrs</span></div>
+                  <div class="day-label"><span>Weeks 43–44</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="reading">O'Reilly: <em>Prometheus: Up and Running</em> — Ch. 1–4</li>
-                    <li class="lab">Install Prometheus + Grafana in your K8s cluster</li>
-                    <li class="lab">Build a dashboard for your app's metrics</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 43</span><span>~6 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li>Write an SLO for your lab app: 99.5% uptime, &lt;200ms p95 latency</li>
-                    <li>Set up alerting rules that fire when SLO is breached</li>
-                  </ul>
-                </div>
-                <div class="day-card">
-                  <div class="day-label"><span>Week 44</span><span>~6 hrs</span></div>
-                  <ul class="day-tasks">
-                    <li class="lab">Chaos exercise: kill a pod. Cause a CPU spike. Simulate a DB outage.</li>
-                    <li>Respond to each. Write a postmortem for one.</li>
-                    <li>Document everything as a runbook.</li>
+                    <li class="reading">O'Reilly: Python for Security Ch. 5–7 (log parsing, API calls)</li>
+                    <li class="lab">
+                      Script: parse Sysmon XML logs, extract process creation events, flag suspicious parent-child
+                      process chains
+                    </li>
+                    <li class="hunt">
+                      This is Detection Engineering — you're automating what you used to chase manually
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
                 <a
                   class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/site-reliability-engineering/9781491929117/"
+                  href="https://learning.oreilly.com/library/view/python-for-security/9781835468227/"
                   target="_blank"
-                  ><span class="res-label">O'REILLY</span>Site Reliability Engineering (Google)</a
+                  ><span class="res-label">O'REILLY</span>Python for Security and Networking</a
                 >
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/prometheus-up/9781492034131/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>Prometheus: Up and Running</a
+                <a class="res-link res-free" href="https://automatetheboringstuff.com" target="_blank"
+                  >↗ Automate the Boring Stuff (free — Python basics)</a
                 >
               </div>
             </div>
@@ -1776,91 +1531,77 @@
         <div class="module">
           <div class="module-header" onclick="toggleModule(this)">
             <span class="module-num">MOD 4.3</span>
-            <span class="module-title">Portfolio Project #3 + DevSecOps Option</span>
-            <span class="module-due due-far">Due: Jun 4, 2027</span>
+            <span class="module-title">Portfolio Project #3 + Career positioning</span>
+            <span class="module-due due-far">Due: Jun 8, 2027</span>
             <span class="chevron">▼</span>
           </div>
           <div class="module-body">
             <div class="week">
               <div class="week-header">
                 <span class="week-tag">Weeks 45–52</span>
-                <span class="week-title">Final project + optional DevSecOps pivot</span>
-                <span class="week-due">May 8 – Jun 4, 2027</span>
+                <span class="week-title">Full detection pipeline + role targeting</span>
+                <span class="week-due">May 11 – Jun 8, 2027</span>
               </div>
               <div class="daily-grid">
                 <div class="day-card">
                   <div class="day-label"><span>Weeks 45–48</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li class="lab">Build portfolio project #3: app on K8s + full observability stack</li>
-                    <li class="reading">Optional security pivot: O'Reilly <em>Learning DevSecOps</em> — Ch. 1–4</li>
-                    <li>Add Snyk scanning to your GitHub Actions pipeline (free tier)</li>
+                    <li class="lab">Build portfolio project #3: end-to-end detection pipeline</li>
+                    <li>
+                      Atomic Red Team simulates attack → Sysmon captures it → Splunk ingests it → Sigma rule fires →
+                      Python script enriches the alert with threat intel
+                    </li>
+                    <li>Document entire pipeline on GitHub with README</li>
                   </ul>
                 </div>
                 <div class="day-card">
                   <div class="day-label"><span>Weeks 49–52</span><span>~6 hrs/wk</span></div>
                   <ul class="day-tasks">
-                    <li>Start CKA (Certified Kubernetes Admin) study if continuing DevOps</li>
-                    <li class="reading">O'Reilly: <em>Certified Kubernetes Administrator</em> study guide</li>
-                    <li>Polish LinkedIn — add all projects, certs, and new skills</li>
-                    <li>Prep for interviews: practice explaining your architecture out loud</li>
+                    <li>Polish all 3 GitHub portfolio pieces</li>
+                    <li>Write a 1-page "detection philosophy" — your approach to building detections</li>
+                    <li>Target roles: Detection Engineer, Threat Hunter, Sr. IR Analyst at mid-size companies</li>
+                    <li class="lab">
+                      Optional next cert: SANS FOR508 (GIAC GCFE) — the gold standard for IR specialists
+                    </li>
                   </ul>
                 </div>
               </div>
               <div class="resources">
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/certified-kubernetes-administrator/9781804619018/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>CKA Certification Training</a
-                >
+                <a class="res-link res-free" href="https://github.com" target="_blank">↗ GitHub portfolio</a>
+                <a class="res-link res-free" href="https://attack.mitre.org" target="_blank">↗ MITRE ATT&CK</a>
                 <a
                   class="res-link res-paid"
-                  href="https://kodekloud.com/courses/cka-certification-course-certified-kubernetes-administrator"
+                  href="https://www.sans.org/cyber-security-courses/advanced-incident-response-threat-hunting-training/"
                   target="_blank"
-                  ><span class="res-label">KODEKLOUD</span>CKA + Mock Exams (~$20/mo)</a
+                  >↗ SANS FOR508 (optional — ~$5k but the career cert)</a
                 >
-                <a class="res-link res-killercoda" href="https://killercoda.com/killer-shell-cka" target="_blank"
-                  ><span class="res-label">KILLERCODA</span>CKA Free Practice Scenarios</a
-                >
-                <a class="res-link res-killersh" href="https://killer.sh" target="_blank"
-                  ><span class="res-label">KILLER.SH</span>Official CKA Exam Simulator (free with exam registration)</a
-                >
-                <a
-                  class="res-link res-oreilly"
-                  href="https://learning.oreilly.com/library/view/learning-devsecops/9781098144852/"
-                  target="_blank"
-                  ><span class="res-label">O'REILLY</span>Learning DevSecOps (optional pivot)</a
-                >
-                <a class="res-link res-free" href="https://snyk.io" target="_blank">↗ Snyk free tier</a>
               </div>
               <div class="assignment">
-                <div class="assignment-label">⬡ Portfolio Project #3 — Due Jun 4</div>
-                <div class="assignment-title">Full SRE Demo Environment</div>
+                <div class="assignment-label">⬡ Portfolio Project #3 — Due Jun 8</div>
+                <div class="assignment-title">End-to-End Detection Pipeline</div>
                 <div class="assignment-desc">
-                  App running in Kubernetes (minikube or EKS). Full observability: Prometheus metrics, Grafana
-                  dashboard, alerting rules. Terraform provisions all infrastructure. GitHub Actions handles CI/CD.
-                  Written runbook + one postmortem. This is your final interview piece — you should be able to walk an
-                  interviewer through every component for 30 minutes.
+                  GitHub repo showing: (1) Atomic Red Team attack simulation mapped to ATT&CK, (2) Sysmon + Splunk log
+                  capture, (3) Sigma rule that fires on the technique, (4) Python script that auto-enriches the alert
+                  with VirusTotal + threat intel lookups, (5) a final "analyst report" written as if this was a real
+                  incident. This is a Detection Engineer job interview in a GitHub repo.
                 </div>
               </div>
               <div class="milestone">
-                <div class="milestone-label">✓ Course Complete — Jun 4, 2027</div>
+                <div class="milestone-label">✓ Course Complete — Jun 8, 2027</div>
                 <ul class="milestone-items">
-                  <li>Linux+, AWS CCP, AWS SAA — all certified</li>
-                  <li>3 portfolio projects on GitHub</li>
-                  <li>K8s fundamentals solid — CKA path clear</li>
-                  <li>SRE practices: SLOs, runbooks, postmortems in hand</li>
-                  <li>First DevOps/SRE role — target landed</li>
+                  <li>Security+, BTL1, CySA+ all certified</li>
+                  <li>3 portfolio projects: DFIR report · Hunting playbooks · Detection pipeline</li>
+                  <li>Can write Sigma rules, YARA rules, and Python detection scripts</li>
+                  <li>Home lab: Windows + Linux VMs, Sysmon, Splunk, Atomic Red Team</li>
+                  <li>Target role: Detection Engineer or Sr. IR Analyst — $120–160k range</li>
+                  <li>Next step: SANS FOR508 when budget allows</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- end p4 -->
     </div>
-    <!-- end container -->
-
     <script>
       function showPhase(id, btn) {
         document.querySelectorAll('.phase').forEach((el) => el.classList.remove('active'));
