@@ -1,0 +1,1879 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps/SRE — Structured 12-Month Course</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    >
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0f0f0f;
+        --surface: #181818;
+        --surface2: #222;
+        --border: #2e2e2e;
+        --text: #e8e6df;
+        --muted: #888;
+        --dim: #555;
+        --blue: #5b9cf6;
+        --green: #4caf7d;
+        --amber: #e8a24a;
+        --teal: #3dcfb0;
+        --purple: #9d82f5;
+        --red: #e05a5a;
+        --blue-dim: #1a2a45;
+        --green-dim: #1a3028;
+        --amber-dim: #3a2a10;
+        --teal-dim: #0d2e28;
+        --purple-dim: #251f3d;
+        --font: 'IBM Plex Sans', sans-serif;
+        --mono: 'IBM Plex Mono', monospace;
+        --radius: 8px;
+        --radius-lg: 12px;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 2rem 1rem;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+      }
+
+      /* Header */
+      .header {
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 1.5rem;
+      }
+      .header-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 500;
+        letter-spacing: -0.3px;
+      }
+      .header-meta {
+        font-size: 12px;
+        color: var(--muted);
+        font-family: var(--mono);
+      }
+      .progress-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .progress-label {
+        font-size: 11px;
+        color: var(--muted);
+        font-family: var(--mono);
+        white-space: nowrap;
+      }
+      .progress-track {
+        flex: 1;
+        height: 4px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--green);
+        border-radius: 99px;
+        width: 0%;
+      }
+
+      /* Phase nav */
+      .phase-nav {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+      }
+      .phase-btn {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-size: 12px;
+        cursor: pointer;
+        background: transparent;
+        color: var(--muted);
+        font-family: var(--font);
+        transition: all 0.15s;
+      }
+      .phase-btn:hover {
+        border-color: var(--dim);
+        color: var(--text);
+      }
+      .phase-btn.active {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .phase-btn.p1.active {
+        border-color: var(--blue);
+        color: var(--blue);
+        background: var(--blue-dim);
+      }
+      .phase-btn.p2.active {
+        border-color: var(--green);
+        color: var(--green);
+        background: var(--green-dim);
+      }
+      .phase-btn.p3.active {
+        border-color: var(--purple);
+        color: var(--purple);
+        background: var(--purple-dim);
+      }
+      .phase-btn.p4.active {
+        border-color: var(--teal);
+        color: var(--teal);
+        background: var(--teal-dim);
+      }
+
+      /* Phase */
+      .phase {
+        display: none;
+      }
+      .phase.active {
+        display: block;
+      }
+      .phase-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1.25rem;
+        padding: 14px 16px;
+        background: var(--surface);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+      }
+      .phase-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .p1 .phase-dot {
+        background: var(--blue);
+      }
+      .p2 .phase-dot {
+        background: var(--green);
+      }
+      .p3 .phase-dot {
+        background: var(--purple);
+      }
+      .p4 .phase-dot {
+        background: var(--teal);
+      }
+      .phase-name {
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .phase-dates {
+        font-size: 12px;
+        color: var(--muted);
+        font-family: var(--mono);
+        margin-left: auto;
+      }
+      .phase-goal {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* Module */
+      .module {
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+      }
+      .module-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        background: var(--surface);
+        cursor: pointer;
+        user-select: none;
+      }
+      .module-header:hover {
+        background: var(--surface2);
+      }
+      .module-num {
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--muted);
+        min-width: 50px;
+      }
+      .module-title {
+        font-size: 14px;
+        font-weight: 500;
+        flex: 1;
+      }
+      .module-due {
+        font-size: 11px;
+        font-family: var(--mono);
+        padding: 3px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+      }
+      .due-upcoming {
+        background: var(--blue-dim);
+        color: var(--blue);
+      }
+      .due-active {
+        background: var(--amber-dim);
+        color: var(--amber);
+      }
+      .due-far {
+        background: var(--surface2);
+        color: var(--dim);
+      }
+      .chevron {
+        font-size: 12px;
+        color: var(--muted);
+        transition: transform 0.2s;
+        margin-left: 8px;
+      }
+      .chevron.open {
+        transform: rotate(180deg);
+      }
+      .module-body {
+        display: none;
+        border-top: 1px solid var(--border);
+      }
+      .module-body.open {
+        display: block;
+      }
+
+      /* Week inside module */
+      .week {
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+      }
+      .week:last-child {
+        border-bottom: none;
+      }
+      .week-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .week-tag {
+        font-size: 10px;
+        font-family: var(--mono);
+        padding: 2px 7px;
+        border-radius: 4px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+      .week-title {
+        font-size: 13px;
+        font-weight: 500;
+      }
+      .week-due {
+        font-size: 11px;
+        font-family: var(--mono);
+        color: var(--muted);
+        margin-left: auto;
+      }
+
+      /* Daily plan */
+      .daily-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .day-card {
+        background: var(--surface2);
+        border-radius: var(--radius);
+        padding: 12px;
+        border: 1px solid var(--border);
+      }
+      .day-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--muted);
+        margin-bottom: 6px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .day-tasks {
+        list-style: none;
+      }
+      .day-tasks li {
+        font-size: 12px;
+        color: var(--text);
+        padding: 3px 0;
+        display: flex;
+        gap: 6px;
+        line-height: 1.4;
+      }
+      .day-tasks li::before {
+        content: '›';
+        color: var(--dim);
+        flex-shrink: 0;
+      }
+      .day-tasks li.lab::before {
+        content: '⬡';
+        color: var(--amber);
+        flex-shrink: 0;
+      }
+      .day-tasks li.reading::before {
+        content: '○';
+        color: var(--blue);
+        flex-shrink: 0;
+      }
+
+      /* Resources */
+      .resources {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .res-link {
+        font-size: 11px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        text-decoration: none;
+        border: 1px solid;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: opacity 0.15s;
+      }
+      .res-link:hover {
+        opacity: 0.75;
+      }
+      .res-oreilly {
+        background: #1a2a10;
+        color: #78c940;
+        border-color: #3a6020;
+      }
+      .res-free {
+        background: var(--green-dim);
+        color: var(--green);
+        border-color: #2a5040;
+      }
+      .res-paid {
+        background: var(--amber-dim);
+        color: var(--amber);
+        border-color: #5a4020;
+      }
+      .res-killercoda {
+        background: #1a1a2e;
+        color: #a78bfa;
+        border-color: #4c3a8a;
+      }
+      .res-awssb {
+        background: #1a2030;
+        color: #60a5fa;
+        border-color: #2a4070;
+      }
+      .res-roadmap {
+        background: #2a1a10;
+        color: #fb923c;
+        border-color: #7a3a10;
+      }
+      .res-killersh {
+        background: #2a1a1a;
+        color: #f87171;
+        border-color: #7a2a2a;
+      }
+      .res-label {
+        font-size: 9px;
+        opacity: 0.7;
+        margin-right: 2px;
+        text-transform: uppercase;
+      }
+
+      /* Assignment */
+      .assignment {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--amber-dim);
+        border-radius: var(--radius);
+        border: 1px solid #5a4020;
+      }
+      .assignment-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--amber);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .assignment-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .assignment-desc {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      /* Milestone */
+      .milestone {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--green-dim);
+        border-radius: var(--radius);
+        border: 1px solid #2a5040;
+      }
+      .milestone-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--green);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .milestone-items {
+        list-style: none;
+      }
+      .milestone-items li {
+        font-size: 12px;
+        color: var(--text);
+        padding: 3px 0;
+        display: flex;
+        gap: 8px;
+      }
+      .milestone-items li::before {
+        content: '✓';
+        color: var(--green);
+      }
+
+      /* Exam block */
+      .exam-block {
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: var(--purple-dim);
+        border-radius: var(--radius);
+        border: 1px solid #4a3a7a;
+      }
+      .exam-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--purple);
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .exam-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .exam-meta {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* Summary bar */
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 8px;
+        margin-bottom: 1.5rem;
+      }
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px;
+      }
+      .stat-label {
+        font-size: 10px;
+        font-family: var(--mono);
+        color: var(--muted);
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .stat-val {
+        font-size: 18px;
+        font-weight: 500;
+        color: var(--text);
+      }
+      .stat-sub {
+        font-size: 11px;
+        color: var(--dim);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="header-top">
+          <div>
+            <h1>DevOps / SRE — 12-Month Structured Course</h1>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">
+              Start date: June 4, 2026 &nbsp;·&nbsp; Target completion: June 4, 2027
+            </div>
+          </div>
+          <div class="header-meta">O'Reilly · KodeKloud · Killercoda · AWS Skill Builder · Killer.sh</div>
+        </div>
+        <div class="progress-row">
+          <span class="progress-label">OVERALL PROGRESS</span>
+          <div class="progress-track"><div class="progress-fill" id="main-progress"></div></div>
+          <span class="progress-label" id="progress-pct">0 / 48 weeks</span>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="stat">
+          <div class="stat-label">Duration</div>
+          <div class="stat-val">52 wks</div>
+          <div class="stat-sub">June 2026 – June 2027</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Weekly time</div>
+          <div class="stat-val">8–10h</div>
+          <div class="stat-sub">Drops to 6h in Phase 4</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Certifications</div>
+          <div class="stat-val">3</div>
+          <div class="stat-sub">Linux+, CCP, SAA</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Portfolio projects</div>
+          <div class="stat-val">3</div>
+          <div class="stat-sub">All on GitHub</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Exam costs</div>
+          <div class="stat-val">~$750</div>
+          <div class="stat-sub">Only external cost</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem;align-items:center">
+        <span style="font-size:10px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-right:4px"
+          >Resource key:</span
+        >
+        <span class="res-link res-oreilly" style="pointer-events:none"
+          ><span class="res-label">O'REILLY</span>O'Reilly Learning</span
+        >
+        <span class="res-link res-paid" style="pointer-events:none"
+          ><span class="res-label">KODEKLOUD</span>KodeKloud (paid)</span
+        >
+        <span class="res-link res-killercoda" style="pointer-events:none"
+          ><span class="res-label">KILLERCODA</span>Killercoda (free)</span
+        >
+        <span class="res-link res-awssb" style="pointer-events:none"
+          ><span class="res-label">AWS SKILL BUILDER</span>AWS Skill Builder (free)</span
+        >
+        <span class="res-link res-roadmap" style="pointer-events:none"
+          ><span class="res-label">ROADMAP</span>roadmap.sh (free)</span
+        >
+        <span class="res-link res-killersh" style="pointer-events:none"
+          ><span class="res-label">KILLER.SH</span>Killer.sh (free w/ exam)</span
+        >
+        <span class="res-link res-free" style="pointer-events:none">↗ Other free</span>
+      </div>
+
+      <div class="phase-nav">
+        <button class="phase-btn p1 active" onclick="showPhase('p1',this)">Phase 1 — Linux + Python</button>
+        <button class="phase-btn p2" onclick="showPhase('p2',this)">Phase 2 — Cloud + CI/CD</button>
+        <button class="phase-btn p3" onclick="showPhase('p3',this)">Phase 3 — Docker + Terraform + SAA</button>
+        <button class="phase-btn p4" onclick="showPhase('p4',this)">Phase 4 — K8s + SRE</button>
+      </div>
+
+      <!-- ==================== PHASE 1 ==================== -->
+      <div id="p1" class="phase p1 active">
+        <div class="phase-header">
+          <div class="phase-dot"></div>
+          <div>
+            <div class="phase-name">Phase 1 — Linux + Python Foundations</div>
+            <div class="phase-goal">Goal: Pass CompTIA Linux+ · Build home lab · Write Python scripts</div>
+          </div>
+          <div class="phase-dates">Jun 4 – Sep 3, 2026</div>
+        </div>
+
+        <!-- MODULE 1 -->
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 1.1</span>
+            <span class="module-title">Linux Fundamentals</span>
+            <span class="module-due due-active">Due: Jun 18, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body open">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Week 1</span>
+                <span class="week-title">File system, navigation, permissions</span>
+                <span class="week-due">Jun 4–10</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>Learning Modern Linux</em> — Ch. 1–2 (file system structure)</li>
+                    <li>Navigate with cd, ls, pwd — no GUI</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 3 — file permissions (chmod, chown)</li>
+                    <li>Create users, set permissions on a test directory</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Lab: linuxjourney.com — Grasshopper track</li>
+                    <li>Complete all 5 Grasshopper modules</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: Ch. 4–5 — package management (apt/yum), process management (ps, top, kill)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Lab: OverTheWire Bandit levels 0–5</li>
+                    <li>Use only man pages — no guides</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/learning-modern-linux/9781098108939/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Learning Modern Linux</a
+                >
+                <a class="res-link res-free" href="https://linuxjourney.com" target="_blank">↗ linuxjourney.com</a>
+                <a class="res-link res-free" href="https://overthewire.org/wargames/bandit/" target="_blank"
+                  >↗ OverTheWire Bandit</a
+                >
+                <a
+                  class="res-link res-killercoda"
+                  href="https://killercoda.com/pawelpiwosz/course/linuxFundamentals"
+                  target="_blank"
+                  ><span class="res-label">KILLERCODA</span>Linux Fundamentals (free)</a
+                >
+                <a class="res-link res-roadmap" href="https://roadmap.sh/devops" target="_blank"
+                  ><span class="res-label">ROADMAP</span>DevOps Roadmap — bookmark this</a
+                >
+              </div>
+            </div>
+
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Week 2</span>
+                <span class="week-title">Networking, SSH, Bash scripting basics</span>
+                <span class="week-due">Jun 11–17</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Linux Command Line</em> — Ch. 24–25 (networking: curl, wget, ssh, netstat)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Set up SSH key pair — connect to a VM without password</li>
+                    <li>Configure ~/.ssh/config for shortcuts</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Linux Command Line</em> — Ch. 26–27 (bash scripting: variables, loops, conditionals)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Write bash script: backs up a folder to a timestamped archive</li>
+                    <li>Schedule it with cron to run nightly</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">OverTheWire Bandit levels 6–10</li>
+                    <li>Review week 1–2 notes. What stuck? What didn't?</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/the-linux-command/9781492071235/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Linux Command Line, 2nd Ed.</a
+                >
+                <a class="res-link res-free" href="https://overthewire.org/wargames/bandit/" target="_blank"
+                  >↗ OverTheWire Bandit</a
+                >
+                <a class="res-link res-killercoda" href="https://killercoda.com/devopskloud" target="_blank"
+                  ><span class="res-label">KILLERCODA</span>DevOpsKloud Linux + Bash Labs (free)</a
+                >
+              </div>
+              <div class="assignment">
+                <div class="assignment-label">⬡ Assignment 1.1 — Due Jun 18</div>
+                <div class="assignment-title">Bash Automation Script</div>
+                <div class="assignment-desc">
+                  Write a bash script that: (1) checks disk usage on all mounted drives, (2) emails an alert if any
+                  drive exceeds 80%, (3) logs results with a timestamp to a file. Push it to a new GitHub repo. This is
+                  your first portfolio piece.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 2 -->
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 1.2</span>
+            <span class="module-title">Linux+ Exam Prep + Systemd + Storage</span>
+            <span class="module-due due-active">Due: Jul 2, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Week 3</span>
+                <span class="week-title">Systemd, storage, LVM, filesystems</span>
+                <span class="week-due">Jun 18–24</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>CompTIA Linux+ Study Guide</em> — Ch. 5 (systemd, services, targets)
+                    </li>
+                    <li>Start/stop/enable/disable 3 services manually</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 6 — disk management, partitioning, LVM</li>
+                    <li>Create a partition and mount it on a VM</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 7 — filesystems (ext4, xfs) and fstab</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 8 — security basics: firewalls (ufw/iptables), SELinux</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">10 Linux+ practice questions from certificationpractice.com</li>
+                    <li>Note every wrong answer — look it up</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/comptia-linux-study/9781394316328/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>CompTIA Linux+ Study Guide (6th Ed, XK0-006)</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://kodekloud.com/courses/the-linux-basics-course"
+                  target="_blank"
+                  ><span class="res-label">KODEKLOUD</span>Linux Basics + Labs (~$20/mo)</a
+                >
+                <a
+                  class="res-link res-free"
+                  href="https://certificationpractice.com/practice-exams/comptia-linux"
+                  target="_blank"
+                  >↗ Free practice tests</a
+                >
+              </div>
+            </div>
+
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Week 4</span>
+                <span class="week-title">Linux+ full cram — all objectives</span>
+                <span class="week-due">Jun 25 – Jul 1</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Review Ch. 1–4 objectives (System Management)</li>
+                    <li>Flash-card any commands you keep forgetting</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Tue</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Review Ch. 5–8 objectives (Security + Storage)</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Full 90-question practice exam (certificationpractice.com)</li>
+                    <li>Target: 80%+ before booking real exam</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li>Review wrong answers from practice exam</li>
+                    <li>Book CompTIA Linux+ exam at Pearson VUE (~$350)</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Final practice run — timed, no aids</li>
+                    <li>Rest. Don't cram the day before.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/comptia-linux-study/9781394316328/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>CompTIA Linux+ Study Guide (6th Ed, XK0-006)</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://kodekloud.com/courses/the-linux-basics-course"
+                  target="_blank"
+                  ><span class="res-label">KODEKLOUD</span>Linux Labs (browser-based)</a
+                >
+                <a
+                  class="res-link res-free"
+                  href="https://certificationpractice.com/practice-exams/comptia-linux"
+                  target="_blank"
+                  >↗ Free practice tests</a
+                >
+              </div>
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">CompTIA Linux+ (XK0-006)</div>
+                <div class="exam-meta">
+                  Book for week of Jul 2–4, 2026 &nbsp;·&nbsp; ~$350 &nbsp;·&nbsp; Pearson VUE &nbsp;·&nbsp; 90 min, 90
+                  questions
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 3 -->
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 1.3</span>
+            <span class="module-title">Python for DevOps</span>
+            <span class="module-due due-far">Due: Aug 5, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 5–6</span>
+                <span class="week-title">Python syntax, data types, file I/O</span>
+                <span class="week-due">Jul 2–15</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Python for DevOps</em> — Ch. 1–2 (Python basics, data types, control flow)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 3 — working with files and the OS module</li>
+                    <li class="lab">Script: list all files in a dir, print size and modified date</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 4 — working with APIs (requests library)</li>
+                    <li class="lab">Script: call a public API, parse the JSON, print results</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Free exercise: automatetheboringstuff.com — pick 1 project chapter and build it</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/python-for-devops/9781492057680/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Python for DevOps</a
+                >
+                <a class="res-link res-free" href="https://automatetheboringstuff.com" target="_blank"
+                  >↗ Automate the Boring Stuff (free)</a
+                >
+              </div>
+            </div>
+
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 7–8</span>
+                <span class="week-title">Python automation + combined with Linux</span>
+                <span class="week-due">Jul 16–29</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Python for DevOps</em> — Ch. 5–6 (subprocess, running shell commands from Python)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed/Thu</span><span>~90 min each</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">
+                      Build: Python script that checks if a list of services is running, restarts any that are stopped,
+                      logs results
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li>Push all scripts to GitHub with README files</li>
+                    <li>Review: could a hiring manager understand what these do?</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/python-for-devops/9781492057680/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Python for DevOps</a
+                >
+                <a class="res-link res-free" href="https://github.com" target="_blank">↗ GitHub (free)</a>
+              </div>
+              <div class="assignment">
+                <div class="assignment-label">⬡ Assignment 1.3 — Due Aug 5</div>
+                <div class="assignment-title">Python System Monitor Script</div>
+                <div class="assignment-desc">
+                  Build a Python script that: monitors CPU, memory, and disk usage every 60 seconds; writes metrics to a
+                  log file in CSV format; sends a simple alert (print to console or email) if any threshold is exceeded.
+                  Push to GitHub with a clear README. This will become the foundation of your portfolio project #1.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE 4 -->
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 1.4</span>
+            <span class="module-title">AWS Free Tier Home Lab Setup</span>
+            <span class="module-due due-far">Due: Sep 3, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 9–12</span>
+                <span class="week-title">EC2, S3, IAM, VPC — hands on</span>
+                <span class="week-due">Aug 6 – Sep 3</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 9</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 1–2 (account setup, EC2, S3)</li>
+                    <li class="lab">Launch EC2 t2.micro, SSH in, install nginx, serve a page</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 10</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 3 (IAM: users, roles, policies)</li>
+                    <li class="lab">Create IAM user with least privilege. Break it. Fix it.</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 11</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>AWS Cookbook</em> — Ch. 4 (VPC, subnets, security groups)</li>
+                    <li class="lab">Build a VPC with public + private subnet from scratch</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 12</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Deploy your Python monitor script to EC2</li>
+                    <li>Set a billing alert at $5 — AWS free tier has traps</li>
+                    <li>Run your Python script on EC2 via SSH</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/aws-cookbook/9781492092599/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>AWS Cookbook</a
+                >
+                <a class="res-link res-free" href="https://aws.amazon.com/free" target="_blank">↗ AWS Free Tier</a>
+              </div>
+              <div class="milestone">
+                <div class="milestone-label">✓ Phase 1 Complete — Sep 3, 2026</div>
+                <ul class="milestone-items">
+                  <li>CompTIA Linux+ certified</li>
+                  <li>5+ Python automation scripts on GitHub</li>
+                  <li>AWS lab running with EC2, S3, IAM, VPC</li>
+                  <li>Comfortable SSHing into remote machines</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end p1 -->
+
+      <!-- ==================== PHASE 2 ==================== -->
+      <div id="p2" class="phase p2">
+        <div class="phase-header">
+          <div class="phase-dot"></div>
+          <div>
+            <div class="phase-name">Phase 2 — Cloud Fundamentals + Git + CI/CD</div>
+            <div class="phase-goal">
+              Goal: Pass AWS Cloud Practitioner · Deploy first live project · Start job search
+            </div>
+          </div>
+          <div class="phase-dates">Sep 4 – Dec 3, 2026</div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 2.1</span>
+            <span class="module-title">AWS Cloud Practitioner Cert</span>
+            <span class="module-due due-far">Due: Oct 7, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 13–16</span>
+                <span class="week-title">AWS core services + CCP exam</span>
+                <span class="week-due">Sep 4 – Oct 1</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 13</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>AWS Certified Cloud Practitioner Study Guide</em> — Ch. 1–4 (compute, storage,
+                      databases)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 14</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 5–7 (networking, security, pricing models)</li>
+                    <li class="lab">Use AWS console to explore each service covered</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 15</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 8–10 (support plans, billing, shared responsibility)</li>
+                    <li class="lab">Full practice exam — O'Reilly has CCP practice tests</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 16</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li>Review all wrong answers from practice exams</li>
+                    <li>Book and sit AWS CCP exam (~$100)</li>
+                    <li class="lab">Target 80%+ on 3 practice tests before sitting</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/aws-certified-cloud/9781394235636/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>AWS CCP Study Guide (2nd Ed, CLF-C02)</a
+                >
+                <a
+                  class="res-link res-awssb"
+                  href="https://skillbuilder.aws/learn/94T2BEN85A/aws-cloud-practitioner-essentials/8D79F3AVR7"
+                  target="_blank"
+                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Practitioner Essentials (free)</a
+                >
+                <a
+                  class="res-link res-awssb"
+                  href="https://skillbuilder.aws/learn/FU5WCYVGKY/aws-cloud-quest-cloud-practitioner/JF9TKU68GT"
+                  target="_blank"
+                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Quest: CCP (free RPG labs)</a
+                >
+                <a class="res-link res-free" href="https://www.youtube.com/watch?v=NhDYbskXRgc" target="_blank"
+                  >↗ freeCodeCamp CCP video (free backup)</a
+                >
+              </div>
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">AWS Certified Cloud Practitioner (CLF-C02)</div>
+                <div class="exam-meta">
+                  Book for week of Sep 28 – Oct 4 &nbsp;·&nbsp; ~$100 &nbsp;·&nbsp; Online or test center &nbsp;·&nbsp;
+                  90 min, 65 questions
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 2.2</span>
+            <span class="module-title">Git + GitHub + CI/CD with GitHub Actions</span>
+            <span class="module-due due-far">Due: Nov 5, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 17–18</span>
+                <span class="week-title">Git version control</span>
+                <span class="week-due">Oct 8–21</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>Head First Git</em> — Ch. 1–4 (commit, branch, merge, rebase)</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">learngitbranching.js.org — complete all Main levels</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Create a GitHub repo for each of your scripts so far</li>
+                    <li>Add .gitignore and meaningful commit messages</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li>Submit a pull request on your own repo — review it yourself</li>
+                    <li>This is the workflow you'll use every day on the job</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/head-first-git/9781492092506/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Head First Git</a
+                >
+                <a class="res-link res-free" href="https://learngitbranching.js.org" target="_blank"
+                  >↗ Learn Git Branching (free)</a
+                >
+              </div>
+            </div>
+
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 19–20</span>
+                <span class="week-title">GitHub Actions CI/CD pipelines</span>
+                <span class="week-due">Oct 22 – Nov 4</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Mon/Tue</span><span>~90 min each</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Learning GitHub Actions</em> — Ch. 1–3 (workflows, triggers, jobs, steps)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Wed</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Write a workflow that runs your Python script tests on every push</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Thu</span><span>~90 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 4–5 (secrets, environments, deployment)</li>
+                    <li class="lab">Add a deploy step: push to EC2 on merge to main</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Fri</span><span>~60 min</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Break the pipeline intentionally — read the error logs</li>
+                    <li>Fix it. Understanding failure messages is a core skill.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/learning-github-actions/9781098131067/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Learning GitHub Actions</a
+                >
+                <a class="res-link res-free" href="https://docs.github.com/en/actions" target="_blank"
+                  >↗ GitHub Actions docs</a
+                >
+              </div>
+              <div class="assignment">
+                <div class="assignment-label">⬡ Portfolio Project #1 — Due Nov 5</div>
+                <div class="assignment-title">Live Deployed App with Full CI/CD Pipeline</div>
+                <div class="assignment-desc">
+                  Deploy your Python monitor script to EC2 via GitHub Actions. Requirements: (1) push to main triggers
+                  the pipeline, (2) pipeline runs tests, (3) on pass, deploys to EC2 via SSH, (4) CloudWatch billing
+                  alarm is set. Write a README with an architecture diagram (even hand-drawn and photographed is fine).
+                  This is your first real portfolio project.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 2.3</span>
+            <span class="module-title">Job Search Launch + SAA Study Begins</span>
+            <span class="module-due due-far">Due: Dec 3, 2026</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 21–24</span>
+                <span class="week-title">LinkedIn, resume, first applications + SAA kickoff</span>
+                <span class="week-due">Nov 5 – Dec 3</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 21</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li>Rewrite LinkedIn — lead with certs, then helpdesk context</li>
+                    <li>Add GitHub portfolio link prominently</li>
+                    <li>Target titles: Jr. DevOps Engineer, Cloud Support Eng, Infrastructure Eng</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Weeks 22–24</span><span>~8 hrs/wk</span></div>
+                  <ul class="day-tasks">
+                    <li>Apply to 5 roles per week minimum</li>
+                    <li class="reading">
+                      O'Reilly: <em>AWS Solutions Architect Study Guide</em> — Ch. 1–4 (start early)
+                    </li>
+                    <li class="lab">Continue building in AWS lab every day — 30 min minimum</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/aws-certified-solutions/9781119982623/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>AWS SAA Study Guide (start here)</a
+                >
+                <a class="res-link res-paid" href="https://learn.cantrill.io" target="_blank"
+                  >↗ Adrian Cantrill SAA (~$40 — optional upgrade)</a
+                >
+              </div>
+              <div class="milestone">
+                <div class="milestone-label">✓ Phase 2 Complete — Dec 3, 2026</div>
+                <ul class="milestone-items">
+                  <li>AWS Cloud Practitioner certified</li>
+                  <li>Portfolio project #1 live on GitHub + EC2</li>
+                  <li>CI/CD pipeline deployed and working</li>
+                  <li>Job applications actively in flight</li>
+                  <li>SAA study started</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end p2 -->
+
+      <!-- ==================== PHASE 3 ==================== -->
+      <div id="p3" class="phase p3">
+        <div class="phase-header">
+          <div class="phase-dot"></div>
+          <div>
+            <div class="phase-name">Phase 3 — Docker, Terraform + AWS SAA</div>
+            <div class="phase-goal">Goal: Pass AWS SAA · Master containers and IaC · Portfolio project #2</div>
+          </div>
+          <div class="phase-dates">Dec 4, 2026 – Mar 4, 2027</div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 3.1</span>
+            <span class="module-title">Docker + Containers</span>
+            <span class="module-due due-far">Due: Jan 7, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 25–28</span>
+                <span class="week-title">Images, Dockerfiles, Compose</span>
+                <span class="week-due">Dec 4, 2026 – Jan 7, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 25</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Docker Deep Dive</em> — Ch. 1–5 (images, containers, networking)
+                    </li>
+                    <li class="lab">Pull an nginx image. Run it. Exec into it.</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 26</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 6–8 (Dockerfiles, volumes, networks)</li>
+                    <li class="lab">Write a Dockerfile for your Python monitor script</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 27</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 9–10 (Docker Compose, multi-container apps)</li>
+                    <li class="lab">Use Docker Compose to run app + a Postgres DB together</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 28</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Push Docker image to AWS ECR (Elastic Container Registry)</li>
+                    <li>Update GitHub Actions pipeline to build + push Docker image on deploy</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/docker-deep-dive/9781800565135/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Docker Deep Dive</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://kodekloud.com/courses/docker-for-the-absolute-beginner"
+                  target="_blank"
+                  ><span class="res-label">KODEKLOUD</span>Docker for Beginners + Labs</a
+                >
+                <a class="res-link res-killercoda" href="https://killercoda.com/docker" target="_blank"
+                  ><span class="res-label">KILLERCODA</span>Docker Hands-On Labs (free)</a
+                >
+                <a class="res-link res-free" href="https://docs.docker.com/get-started/" target="_blank"
+                  >↗ Docker docs (free reference)</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 3.2</span>
+            <span class="module-title">Terraform — Infrastructure as Code</span>
+            <span class="module-due due-far">Due: Feb 4, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 29–32</span>
+                <span class="week-title">Providers, resources, state, modules</span>
+                <span class="week-due">Jan 8 – Feb 4, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 29</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Terraform: Up and Running</em> — Ch. 1–2 (why IaC, basic syntax)
+                    </li>
+                    <li class="lab">
+                      Provision an EC2 instance entirely through Terraform — delete your console habit
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 30</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 3–4 (state management, remote state in S3)</li>
+                    <li class="lab">Move Terraform state to S3 backend</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 31</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 5–6 (modules, reusable infrastructure)</li>
+                    <li class="lab">Build a reusable VPC module</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 32</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Destroy and recreate your entire AWS lab using only Terraform</li>
+                    <li>This is the muscle memory that gets you hired</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/terraform-up-and/9781098116736/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Terraform: Up and Running, 3rd Ed.</a
+                >
+                <a class="res-link res-free" href="https://developer.hashicorp.com/terraform/tutorials" target="_blank"
+                  >↗ HashiCorp tutorials (free reference)</a
+                >
+              </div>
+              <div class="assignment">
+                <div class="assignment-label">⬡ Portfolio Project #2 — Due Feb 4</div>
+                <div class="assignment-title">Full IaC + Containerized Deployment Pipeline</div>
+                <div class="assignment-desc">
+                  Terraform provisions all AWS infrastructure (VPC, EC2, S3, ECR). GitHub Actions builds Docker image,
+                  pushes to ECR, deploys container to EC2. CloudWatch monitoring wired up. All code on GitHub with
+                  architecture diagram in README. This is a job interview conversation piece — be ready to walk through
+                  every line.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 3.3</span>
+            <span class="module-title">AWS Solutions Architect Associate (SAA)</span>
+            <span class="module-due due-far">Due: Mar 4, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 33–36</span>
+                <span class="week-title">Deep AWS architecture + exam</span>
+                <span class="week-due">Feb 5 – Mar 4, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 33</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>AWS SAA Study Guide</em> — networking deep dive (VPC, Route53, CloudFront, ALB)
+                    </li>
+                    <li class="lab">Build a multi-AZ VPC with load balancer in your lab</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 34</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Storage + databases (S3, EBS, EFS, RDS, DynamoDB)</li>
+                    <li class="lab">Spin up an RDS instance — connect from EC2</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 35</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Serverless (Lambda, API Gateway, SQS, SNS) + HA patterns</li>
+                    <li class="lab">3 full practice exams — O'Reilly has SAA practice tests</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 36</span><span>~8 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li>Review every wrong answer — understand the why not just the what</li>
+                    <li>Sit AWS SAA exam (~$300)</li>
+                    <li>Target: 80%+ on practice tests before sitting</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/aws-certified-solutions/9781119982623/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>AWS SAA Study Guide, 4th Ed.</a
+                >
+                <a
+                  class="res-link res-awssb"
+                  href="https://skillbuilder.aws/learn/TFDQJZ1UV5/architecting-on-aws/DPS7CTFY8J"
+                  target="_blank"
+                  ><span class="res-label">AWS SKILL BUILDER</span>Architecting on AWS (free)</a
+                >
+                <a class="res-link res-awssb" href="https://skillbuilder.aws/cloudquest" target="_blank"
+                  ><span class="res-label">AWS SKILL BUILDER</span>Cloud Quest: Solutions Architect (free)</a
+                >
+                <a class="res-link res-roadmap" href="https://roadmap.sh/aws" target="_blank"
+                  ><span class="res-label">ROADMAP</span>AWS Roadmap — check gaps</a
+                >
+                <a class="res-link res-paid" href="https://learn.cantrill.io" target="_blank"
+                  >↗ Adrian Cantrill SAA (~$40 — highly recommended supplement)</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://www.udemy.com/course/practice-exams-aws-certified-solutions-architect-associate/"
+                  target="_blank"
+                  >↗ Tutorials Dojo practice exams (~$15)</a
+                >
+              </div>
+              <div class="exam-block">
+                <div class="exam-label">📋 Certification Exam</div>
+                <div class="exam-title">AWS Certified Solutions Architect – Associate (SAA-C03)</div>
+                <div class="exam-meta">
+                  Book for week of Feb 24 – Mar 4 &nbsp;·&nbsp; ~$300 &nbsp;·&nbsp; Pearson VUE or online &nbsp;·&nbsp;
+                  130 min, 65 questions
+                </div>
+              </div>
+              <div class="milestone">
+                <div class="milestone-label">✓ Phase 3 Complete — Mar 4, 2027</div>
+                <ul class="milestone-items">
+                  <li>AWS Solutions Architect Associate certified</li>
+                  <li>Comfortable with Docker and containerization</li>
+                  <li>Can provision full AWS infra from scratch with Terraform</li>
+                  <li>Portfolio project #2 live and presentable</li>
+                  <li>Job interviews likely in progress</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end p3 -->
+
+      <!-- ==================== PHASE 4 ==================== -->
+      <div id="p4" class="phase p4">
+        <div class="phase-header">
+          <div class="phase-dot"></div>
+          <div>
+            <div class="phase-name">Phase 4 — Kubernetes + SRE Practices</div>
+            <div class="phase-goal">
+              Goal: K8s fundamentals · SRE mindset · Portfolio project #3 · First role landed
+            </div>
+          </div>
+          <div class="phase-dates">Mar 5 – Jun 4, 2027</div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 4.1</span>
+            <span class="module-title">Kubernetes Fundamentals</span>
+            <span class="module-due due-far">Due: Apr 7, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 37–40</span>
+                <span class="week-title">Pods, deployments, services, ingress</span>
+                <span class="week-due">Mar 5 – Apr 7, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 37</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Kubernetes: Up and Running</em> — Ch. 1–4 (architecture, pods, deployments)
+                    </li>
+                    <li class="lab">Install minikube locally. Deploy your Docker app.</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 38</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 5–7 (services, ingress, configmaps, secrets)</li>
+                    <li class="lab">Expose your app with a LoadBalancer service</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 39</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: Ch. 8–9 (namespaces, resource limits, autoscaling)</li>
+                    <li class="lab">Set CPU/memory limits. Watch what happens when you exceed them.</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 40</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Deploy your Dockerized app to a free EKS trial or minikube</li>
+                    <li>Provision the cluster with Terraform</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/kubernetes-up-and/9781098110192/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Kubernetes: Up and Running, 3rd Ed.</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://kodekloud.com/courses/cka-certification-course-certified-kubernetes-administrator"
+                  target="_blank"
+                  ><span class="res-label">KODEKLOUD</span>CKA Course + Practice Labs</a
+                >
+                <a class="res-link res-killercoda" href="https://killercoda.com/killer-shell-cka" target="_blank"
+                  ><span class="res-label">KILLERCODA</span>CKA Scenarios + K8s Playground (free)</a
+                >
+                <a class="res-link res-free" href="https://kubernetes.io/docs/tutorials/" target="_blank"
+                  >↗ K8s official tutorials (free)</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 4.2</span>
+            <span class="module-title">SRE Practices — Observability + Incident Response</span>
+            <span class="module-due due-far">Due: May 7, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 41–44</span>
+                <span class="week-title">Monitoring, SLOs, runbooks, postmortems</span>
+                <span class="week-due">Apr 8 – May 7, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Week 41</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">
+                      O'Reilly: <em>Site Reliability Engineering</em> (Google SRE Book) — Ch. 1–4 (what SRE is, SLOs,
+                      error budgets)
+                    </li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 42</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="reading">O'Reilly: <em>Prometheus: Up and Running</em> — Ch. 1–4</li>
+                    <li class="lab">Install Prometheus + Grafana in your K8s cluster</li>
+                    <li class="lab">Build a dashboard for your app's metrics</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 43</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li>Write an SLO for your lab app: 99.5% uptime, &lt;200ms p95 latency</li>
+                    <li>Set up alerting rules that fire when SLO is breached</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Week 44</span><span>~6 hrs</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Chaos exercise: kill a pod. Cause a CPU spike. Simulate a DB outage.</li>
+                    <li>Respond to each. Write a postmortem for one.</li>
+                    <li>Document everything as a runbook.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/site-reliability-engineering/9781491929117/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Site Reliability Engineering (Google)</a
+                >
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/prometheus-up/9781492034131/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Prometheus: Up and Running</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module">
+          <div class="module-header" onclick="toggleModule(this)">
+            <span class="module-num">MOD 4.3</span>
+            <span class="module-title">Portfolio Project #3 + DevSecOps Option</span>
+            <span class="module-due due-far">Due: Jun 4, 2027</span>
+            <span class="chevron">▼</span>
+          </div>
+          <div class="module-body">
+            <div class="week">
+              <div class="week-header">
+                <span class="week-tag">Weeks 45–52</span>
+                <span class="week-title">Final project + optional DevSecOps pivot</span>
+                <span class="week-due">May 8 – Jun 4, 2027</span>
+              </div>
+              <div class="daily-grid">
+                <div class="day-card">
+                  <div class="day-label"><span>Weeks 45–48</span><span>~6 hrs/wk</span></div>
+                  <ul class="day-tasks">
+                    <li class="lab">Build portfolio project #3: app on K8s + full observability stack</li>
+                    <li class="reading">Optional security pivot: O'Reilly <em>Learning DevSecOps</em> — Ch. 1–4</li>
+                    <li>Add Snyk scanning to your GitHub Actions pipeline (free tier)</li>
+                  </ul>
+                </div>
+                <div class="day-card">
+                  <div class="day-label"><span>Weeks 49–52</span><span>~6 hrs/wk</span></div>
+                  <ul class="day-tasks">
+                    <li>Start CKA (Certified Kubernetes Admin) study if continuing DevOps</li>
+                    <li class="reading">O'Reilly: <em>Certified Kubernetes Administrator</em> study guide</li>
+                    <li>Polish LinkedIn — add all projects, certs, and new skills</li>
+                    <li>Prep for interviews: practice explaining your architecture out loud</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="resources">
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/certified-kubernetes-administrator/9781804619018/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>CKA Certification Training</a
+                >
+                <a
+                  class="res-link res-paid"
+                  href="https://kodekloud.com/courses/cka-certification-course-certified-kubernetes-administrator"
+                  target="_blank"
+                  ><span class="res-label">KODEKLOUD</span>CKA + Mock Exams (~$20/mo)</a
+                >
+                <a class="res-link res-killercoda" href="https://killercoda.com/killer-shell-cka" target="_blank"
+                  ><span class="res-label">KILLERCODA</span>CKA Free Practice Scenarios</a
+                >
+                <a class="res-link res-killersh" href="https://killer.sh" target="_blank"
+                  ><span class="res-label">KILLER.SH</span>Official CKA Exam Simulator (free with exam registration)</a
+                >
+                <a
+                  class="res-link res-oreilly"
+                  href="https://learning.oreilly.com/library/view/learning-devsecops/9781098144852/"
+                  target="_blank"
+                  ><span class="res-label">O'REILLY</span>Learning DevSecOps (optional pivot)</a
+                >
+                <a class="res-link res-free" href="https://snyk.io" target="_blank">↗ Snyk free tier</a>
+              </div>
+              <div class="assignment">
+                <div class="assignment-label">⬡ Portfolio Project #3 — Due Jun 4</div>
+                <div class="assignment-title">Full SRE Demo Environment</div>
+                <div class="assignment-desc">
+                  App running in Kubernetes (minikube or EKS). Full observability: Prometheus metrics, Grafana
+                  dashboard, alerting rules. Terraform provisions all infrastructure. GitHub Actions handles CI/CD.
+                  Written runbook + one postmortem. This is your final interview piece — you should be able to walk an
+                  interviewer through every component for 30 minutes.
+                </div>
+              </div>
+              <div class="milestone">
+                <div class="milestone-label">✓ Course Complete — Jun 4, 2027</div>
+                <ul class="milestone-items">
+                  <li>Linux+, AWS CCP, AWS SAA — all certified</li>
+                  <li>3 portfolio projects on GitHub</li>
+                  <li>K8s fundamentals solid — CKA path clear</li>
+                  <li>SRE practices: SLOs, runbooks, postmortems in hand</li>
+                  <li>First DevOps/SRE role — target landed</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end p4 -->
+    </div>
+    <!-- end container -->
+
+    <script>
+      function showPhase(id, btn) {
+        document.querySelectorAll('.phase').forEach((el) => el.classList.remove('active'));
+        document.querySelectorAll('.phase-btn').forEach((el) => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        btn.classList.add('active');
+      }
+      function toggleModule(header) {
+        const body = header.nextElementSibling;
+        const chevron = header.querySelector('.chevron');
+        body.classList.toggle('open');
+        chevron.classList.toggle('open');
+      }
+    </script>
+  </body>
+</html>
