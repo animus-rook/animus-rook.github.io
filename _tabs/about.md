@@ -4,12 +4,6 @@ icon: fas fa-info-circle
 order: 4
 ---
 
----
-layout: page
-title: About Me
-permalink: /about/
----
-
 Hey, I'm Anthony — welcome to my corner of the internet.
 
 ## What I do
